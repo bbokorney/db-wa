@@ -1,3 +1,11 @@
+<!-- Got this from a tutorial for html5.  What we need is myfunc() to refresh the page, thus calling a new song and updating the queue.
+
+
+‘myaudio.addEventListener(‘ended’,myfunc)’ – This will call ‘myfunc()’ once the audio has finished -->
+
+
+
+
 <html>
 <head>
 <title>mockupDBpage</title>
@@ -15,6 +23,7 @@ body {
 
 <div id="content">
 <body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+	
 <!-- Save for Web Slices (mockupDBpage.psd) -->
 <table id="Table_01" width="1280" height="720" border="0" cellpadding="0" cellspacing="0">
 	<tr>
