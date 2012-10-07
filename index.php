@@ -21,6 +21,20 @@ body {
 </style>
 </head>
 
+<!-- attempting to add audio player -->
+
+<audio controls="controls">
+  	<source src="track.ogg" type="audio/ogg" />
+  	<source src="track.mp3" type="audio/mpeg" />
+	Your browser does not support the audio element.
+	<script>
+	var myaudio = new Audio('testAudio.mp3');
+	myaudio.play();
+	</script>
+</audio>
+
+<!-- end audio player section -->
+
 <div id="content">
 <body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 	
@@ -42,6 +56,7 @@ body {
 	</tr>
 </table>
 <!-- End Save for Web Slices -->
+
 </body>
 </div>
 </html>
