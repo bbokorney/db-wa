@@ -35,6 +35,25 @@ body {
 
 <!-- end audio player section -->
 
+<!-- Database query php -->
+
+<?php
+$username="root";
+$password="droidbox";
+$database="droidbox";
+
+mysql_connect(localhost,$username,$password);
+@mysql_select_db($database) or die( "Unable to select database");
+$query="select title,artist from song,queue WHERE id = songID ORDER BY priority,request_type,time_requested LIMIT 4";
+$result=mysql_query($query);
+
+$num=mysql_numrows($result);
+
+mysql_close();
+?>
+
+<!-- end database query php -->
+
 <div id="content">
 <body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 	
@@ -52,7 +71,28 @@ body {
 	</tr>
 	<tr>
 		<td>
-			<img src="images/mockupDBpage_04.png" width="637" height="256" alt=""></td>
+			<table border="0" cellspacing="2" cellpadding="2">
+			<tr>
+			<td><font face="Arial, Helvetica, sans-serif" color="white" size="3">Coming Up:</font></td>
+			</tr>
+
+			<?php
+			$i=0;
+			while ($i < $num) {
+
+			$f1=mysql_result($result,$i,"title");
+			$f2=mysql_result($result,$i,"artist");
+			?>
+
+			<tr>
+			<td><font face="Arial, Helvetica, sans-serif" color="white" size="3"><?php echo $i+1; echo ") ".$f2." - ".$f1; ?> </font></td>
+			</tr>
+
+			<?php
+			$i++;
+			}
+			?>
+		<!--	<img src="images/mockupDBpage_04.png" width="637" height="256" alt=""> --> </td>
 	</tr>
 </table>
 <!-- End Save for Web Slices -->
