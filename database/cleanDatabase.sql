@@ -1,6 +1,6 @@
 #delete all valeus from 
-truncate payment;
-truncate playlist;
-truncate playlist_name;
-truncate queue;
-truncate song;
+truncate droidbox.payment;
+truncate droidbox.playlist;
+truncate droidbox.playlist_name;
+truncate droidbox.queue;
+truncate droidbox.song;
