@@ -44,8 +44,11 @@ $database="droidbox";
 
 mysql_connect(localhost,$username,$password);
 @mysql_select_db($database) or die( "Unable to select database");
-$query="select title,artist from song,queue WHERE id = songID ORDER BY priority,request_type,time_requested LIMIT 4";
+$query="select title,artist,file_path from song,queue WHERE id = songID ORDER BY priority,request_type,time_requested LIMIT 4 OFFSET 1";
 $result=mysql_query($query);
+
+$query="select title,artist,file_path from song,queue WHERE id = songID ORDER BY priority,request_type,time_requested LIMIT 1";
+$now_playing=mysql_query($query);
 
 $num=mysql_numrows($result);
 
@@ -65,16 +68,25 @@ mysql_close();
 	</tr>
 	<tr>
 		<td>
-			<img src="images/mockupDBpage_02.png" width="637" height="206" alt=""></td>
+			<!-- Now Playing -->			
+			<font face="Arial, Helvetica, sans-serif" color="white" size="5">Now Playing:</font>
+			<?php
+
+			$f1=mysql_result($now_playing,0,"title");
+			$f2=mysql_result($now_playing,0,"artist");
+			?>
+
+			<font face="Arial, Helvetica, sans-serif" color="white" size="10"><?php echo "<br />".$f2." - ".$f1; ?> </font>
+
+			<!-- end Now Playing -->
+		</td>
 		<td rowspan="2">
 			<img src="images/mockupDBpage_03.png" width="643" height="462" alt=""></td>
 	</tr>
 	<tr>
 		<td>
-			<table border="0" cellspacing="2" cellpadding="2">
-			<tr>
-			<td><font face="Arial, Helvetica, sans-serif" color="white" size="3">Coming Up:</font></td>
-			</tr>
+			<!-- Queue -->			
+			<font face="Arial, Helvetica, sans-serif" color="white" size="5">Coming Up:</font><br />
 
 			<?php
 			$i=0;
@@ -84,15 +96,14 @@ mysql_close();
 			$f2=mysql_result($result,$i,"artist");
 			?>
 
-			<tr>
-			<td><font face="Arial, Helvetica, sans-serif" color="white" size="3"><?php echo $i+1; echo ") ".$f2." - ".$f1; ?> </font></td>
-			</tr>
+			<font face="Arial, Helvetica, sans-serif" color="white" size="6"><?php echo $i+1; echo ") ".$f2." - ".$f1."<br />"; ?> </font>
 
 			<?php
 			$i++;
 			}
 			?>
-		<!--	<img src="images/mockupDBpage_04.png" width="637" height="256" alt=""> --> </td>
+			<!-- end Queue -->
+		 </td>
 	</tr>
 </table>
 <!-- End Save for Web Slices -->
