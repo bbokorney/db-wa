@@ -1,11 +1,3 @@
-<!-- Got this from a tutorial for html5.  What we need is myfunc() to refresh the page, thus calling a new song and updating the queue.
-
-
-‘myaudio.addEventListener(‘ended’,myfunc)’ – This will call ‘myfunc()’ once the audio has finished -->
-
-
-
-
 <html>
 <head>
 <title>mockupDBpage</title>
@@ -31,16 +23,33 @@ body {
 	var myaudio = new Audio('testAudio.mp3');
 	myaudio.play();
 	
+	myaudio.duration = songLength;
+	
+
+
+
+	//function timedRefresh(songLength)
+	//{
+	//	setTimeout("location.reload(true);",songLength);		
+	//}
+
+	//<body onload="JavaScript:timedRefresh(songLength);">
+	//audio.addEventListner('ended', function()
+	//{
+	//	location.reload(true);
+	//}
+
 	//myaudio.duration = songLength;
 	//function refresh()
 	//{
  	//	window.location.replace(localhost/db-wa);
 	//}
 	
-//NEED to write my func, refreshes page when song ends!!!!!!!!
+	//NEED to write my func, refreshes page when song ends!!!!!!!!
 	//myaudio.addEventListener('ended',myaudio.refresh());
 
 	</script>
+	
 </audio>
 
 <!-- end audio player section -->
