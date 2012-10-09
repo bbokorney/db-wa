@@ -30,6 +30,16 @@ body {
 	<script>
 	var myaudio = new Audio('testAudio.mp3');
 	myaudio.play();
+	
+	//myaudio.duration = songLength;
+	//function refresh()
+	//{
+ 	//	window.location.replace(localhost/db-wa);
+	//}
+	
+//NEED to write my func, refreshes page when song ends!!!!!!!!
+	//myaudio.addEventListener('ended',myaudio.refresh());
+
 	</script>
 </audio>
 
