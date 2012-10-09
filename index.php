@@ -2,6 +2,15 @@
 <head>
 <title>mockupDBpage</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<!--Either somehow has to change 20 to the length of the current track
+	or not refresh, instead loop updating the current track and now playing queue
+	and playing the next song when the current song finishes..? -->
+
+<META HTTP-EQUIV="refresh" CONTENT="60;URL=http://localhost/db-wa/">
+
+
+
 <script src="nowPlaying.js" type="text/javascript"></script>
 <style type='text/css'>
 body {
@@ -22,12 +31,12 @@ body {
 	<script>
 	var myaudio = new Audio('testAudio.mp3');
 	myaudio.play();
-	
+	myaudio.play();
 	myaudio.duration = songLength;
 	
 
 
-
+	//NONE of these are working...
 	//function timedRefresh(songLength)
 	//{
 	//	setTimeout("location.reload(true);",songLength);		
