@@ -4,7 +4,8 @@ $username="root";
 $password="droidbox";
 $database="droidbox";
 
-mysql_connect(localhost,$username,$password);
+//mysql_connect(localhost,$username,$password);
+mysql_connect("localhost");
 @mysql_select_db($database) or die( "Unable to select database");
 $query="select title,artist,file_path,length from song,queue WHERE id = songID ORDER BY priority,request_type,time_requested LIMIT 4 OFFSET 1";
 $result=mysql_query($query);
@@ -55,6 +56,7 @@ body {
 <audio controls="controls">
   	<source src="track.ogg" type="audio/ogg" />
   	<source src="track.mp3" type="audio/mpeg" />
+	
 	Your browser does not support the audio element.
 	<script language="javascript">
 	var myaudio = new Audio('<?php echo($filepath); ?>');
