@@ -1,14 +1,41 @@
+<!-- Genereates sql queries -->
+<?php
+$username="root";
+$password="droidbox";
+$database="droidbox";
+
+mysql_connect(localhost,$username,$password);
+@mysql_select_db($database) or die( "Unable to select database");
+$query="select title,artist,file_path,length from song,queue WHERE id = songID ORDER BY priority,request_type,time_requested LIMIT 4 OFFSET 1";
+$result=mysql_query($query);
+
+$query="select title,artist,file_path,length from song,queue WHERE id = songID ORDER BY priority,request_type,time_requested LIMIT 1";
+$now_playing=mysql_query($query);
+
+$num=mysql_numrows($result);
+
+mysql_close();
+?>
+
+<?php
+			$filepath=mysql_result($now_playing,0,"file_path");
+			
+			$songLength=mysql_result($now_playing,0,"length");
+?>
+
 <html>
 <head>
+
+
+
 <title>mockupDBpage</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-<!--Either somehow has to change 20 to the length of the current track
+<META HTTP-EQUIV="REFRESH" content="<?php echo($songLength); ?>;URL=http://localhost/db-wa/">
+
+<!--Either somehow has to change 60 to the length of the current track
 	or not refresh, instead loop updating the current track and now playing queue
 	and playing the next song when the current song finishes..? -->
-
-<META HTTP-EQUIV="refresh" CONTENT="60;URL=http://localhost/db-wa/">
-
 
 
 <script src="nowPlaying.js" type="text/javascript"></script>
@@ -24,67 +51,22 @@ body {
 
 <!-- attempting to add audio player -->
 
+
 <audio controls="controls">
   	<source src="track.ogg" type="audio/ogg" />
   	<source src="track.mp3" type="audio/mpeg" />
 	Your browser does not support the audio element.
-	<script>
-	var myaudio = new Audio('testAudio.mp3');
+	<script language="javascript">
+	var myaudio = new Audio('<?php echo($filepath); ?>');
 	myaudio.play();
-	myaudio.play();
-	myaudio.duration = songLength;
 	
-
-
-	//NONE of these are working...
-	//function timedRefresh(songLength)
-	//{
-	//	setTimeout("location.reload(true);",songLength);		
-	//}
-
-	//<body onload="JavaScript:timedRefresh(songLength);">
-	//audio.addEventListner('ended', function()
-	//{
-	//	location.reload(true);
-	//}
-
-	//myaudio.duration = songLength;
-	//function refresh()
-	//{
- 	//	window.location.replace(localhost/db-wa);
-	//}
-	
-	//NEED to write my func, refreshes page when song ends!!!!!!!!
-	//myaudio.addEventListener('ended',myaudio.refresh());
-
+	//myaudio.addEventListener("onended",timedRefresh);
 	</script>
+	
 	
 </audio>
 
 <!-- end audio player section -->
-
-<!-- Database query php -->
-
-<?php
-$username="root";
-$password="droidbox";
-$database="droidbox";
-
-//mysql_connect(localhost,$username,$password);
-mysql_connect("localhost");
-@mysql_select_db($database) or die( "Unable to select database");
-$query="select title,artist,file_path from song,queue WHERE id = songID ORDER BY priority,request_type,time_requested LIMIT 4 OFFSET 1";
-$result=mysql_query($query);
-
-$query="select title,artist,file_path from song,queue WHERE id = songID ORDER BY priority,request_type,time_requested LIMIT 1";
-$now_playing=mysql_query($query);
-
-$num=mysql_numrows($result);
-
-mysql_close();
-?>
-
-<!-- end database query php -->
 
 <div id="content">
 <body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
