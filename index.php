@@ -15,13 +15,13 @@ $now_playing=mysql_query($query);
 
 $num=mysql_numrows($result);
 
-mysql_close();
-?>
+$filepath=mysql_result($now_playing,0,"file_path");
+$songLength=mysql_result($now_playing,0,"length");
 
-<?php
-			$filepath=mysql_result($now_playing,0,"file_path");
-			
-			$songLength=mysql_result($now_playing,0,"length");
+$query="delete from queue where songID=(SELECT id FROM song WHERE file_path=\"".$filepath."\")";
+$update_queue=mysql_query($query);
+
+mysql_close();
 ?>
 
 <html>
