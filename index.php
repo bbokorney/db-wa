@@ -42,7 +42,8 @@ $username="root";
 $password="droidbox";
 $database="droidbox";
 
-mysql_connect(localhost,$username,$password);
+//mysql_connect(localhost,$username,$password);
+mysql_connect("localhost");
 @mysql_select_db($database) or die( "Unable to select database");
 $query="select title,artist,file_path from song,queue WHERE id = songID ORDER BY priority,request_type,time_requested LIMIT 4 OFFSET 1";
 $result=mysql_query($query);
