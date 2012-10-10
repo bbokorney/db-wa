@@ -14,10 +14,12 @@ $query="select title,artist,file_path,length from song,queue WHERE id = songID O
 $now_playing=mysql_query($query);
 
 $num=mysql_numrows($result);
-
-$filepath=mysql_result($now_playing,0,"file_path");
-$songLength=mysql_result($now_playing,0,"length");
-
+$filepath = ".";
+$songLength = -1;
+if(mysql_numrows($now_playing) > 0) {
+	$filepath=mysql_result($now_playing,0,"file_path");
+	$songLength=mysql_result($now_playing,0,"length");
+}
 $query="delete from queue where songID=(SELECT id FROM song WHERE file_path=\"".$filepath."\")";
 $update_queue=mysql_query($query);
 
@@ -52,7 +54,6 @@ body {
 
 <!-- attempting to add audio player -->
 
-
 <audio controls="controls">
   	<source src="track.ogg" type="audio/ogg" />
   	<source src="track.mp3" type="audio/mpeg" />
@@ -84,12 +85,17 @@ body {
 			<!-- Now Playing -->			
 			<font face="Arial, Helvetica, sans-serif" color="white" size="5">Now Playing:</font>
 			<?php
-
-			$f1=mysql_result($now_playing,0,"title");
-			$f2=mysql_result($now_playing,0,"artist");
+			$descrip = "";
+			if(mysql_num_rows($now_playing) < 1) {
+				$descrip =  "<br /> No song is currently playing.";
+			}
+			else {
+				$f1=mysql_result($now_playing,0,"title");
+				$f2=mysql_result($now_playing,0,"artist");
+				$descrip = "<br />".$f2." - ".$f1;
+			}
 			?>
-
-			<font face="Arial, Helvetica, sans-serif" color="white" size="10"><?php echo "<br />".$f2." - ".$f1; ?> </font>
+			<font face="Arial, Helvetica, sans-serif" color="white" size="10"><?php echo $descrip; ?> </font>
 
 			<!-- end Now Playing -->
 		</td>
