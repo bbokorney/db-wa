@@ -128,10 +128,11 @@ body {
 			<!-- Empty Queue message -->
 			<?php
 			if ($num<$minQueue){
-				echo "<font face="Arial, Helvetica, sans-serif" color="white" size="5">Low Queue, MAKE REQUESTS!!</font><br />"
+
 			}
 					
 			?>
+			
 
 
 		 </td>
