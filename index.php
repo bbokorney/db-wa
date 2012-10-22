@@ -109,6 +109,7 @@ body {
 
 			<?php
 			$i=0;
+			$minQueue=2;
 			while ($i < $num) {
 
 			$f1=mysql_result($result,$i,"title");
@@ -122,6 +123,17 @@ body {
 			}
 			?>
 			<!-- end Queue -->
+			
+
+			<!-- Empty Queue message -->
+			<?php
+			if ($num<$minQueue){
+				echo "<font face="Arial, Helvetica, sans-serif" color="white" size="5">Low Queue, MAKE REQUESTS!!</font><br />"
+			}
+					
+			?>
+
+
 		 </td>
 	</tr>
 </table>
