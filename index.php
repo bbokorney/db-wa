@@ -109,6 +109,7 @@ body {
 
 			<?php
 			$i=0;
+			$minQueue=2;
 			while ($i < $num) {
 
 			$f1=mysql_result($result,$i,"title");
@@ -122,6 +123,18 @@ body {
 			}
 			?>
 			<!-- end Queue -->
+			
+
+			<!-- Empty Queue message -->
+			<?php
+			if ($num<$minQueue){
+
+			}
+					
+			?>
+			
+
+
 		 </td>
 	</tr>
 </table>
