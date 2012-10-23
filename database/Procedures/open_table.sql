@@ -3,6 +3,7 @@ delimiter $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `open_table`(
 	IN table_number int(11),
 	OUT success int,
+	OUT message varchar(255),
 	OUT id_number int(11)
 )
 proc:BEGIN
@@ -11,6 +12,7 @@ proc:BEGIN
 	IF(row_count > 0) THEN
 		-- table already has a code
 		SET success = 1;
+		SET message = "This table has already been opened.";
 		SET id_number = -1;
 		LEAVE proc;
 	END IF;
@@ -18,6 +20,7 @@ proc:BEGIN
 	-- insert new row for this table, set table code and request count to 0
 	-- generate random number between 1000 and 9999
 	SET success = 0;
+	SET message = "Success!";
 	SET id_number = 0;
 	WHILE(id_number = 0) DO
 		SET id_number = (SELECT FLOOR(1000 + RAND() * 8999));
