@@ -1,6 +1,6 @@
 delimiter $$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `make_table_code`(
+CREATE DEFINER=`root`@`localhost` PROCEDURE `open_table`(
 	IN table_number int(11),
 	OUT success int,
 	OUT id_number int(11)
@@ -37,4 +37,3 @@ proc:BEGIN
 		);
 END$$
 
-SELECT * FROM droidbox.payment;
