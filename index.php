@@ -52,7 +52,7 @@ body {
 </style>
 </head>
 
-<!-- attempting to add audio player -->
+<!-- audio player -->
 
 <audio controls="controls">
   	<source src="track.ogg" type="audio/ogg" />
@@ -128,7 +128,7 @@ body {
 			<!-- Empty Queue message -->
 			<?php
 			if ($num<$minQueue){
-
+			echo "<font face=\"Arial, Helvetica, sans-serif\" color=\"white\" size=\"6\">!!!Low Queue--Send Requests!!! <br /> </font>";
 			}
 					
 			?>
