@@ -1,6 +1,7 @@
-#delete all valeus from 
-truncate droidbox.payment;
-truncate droidbox.playlist;
-truncate droidbox.playlist_name;
-truncate droidbox.queue;
-truncate droidbox.song;
+use droidbox;
+-- delete all values from each table
+truncate payment;
+truncate playlist;
+truncate playlist_name;
+truncate queue;
+truncate song;

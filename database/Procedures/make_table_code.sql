@@ -1,5 +1,0 @@
-use droidbox;
-
-BEGIN
-	
-END
