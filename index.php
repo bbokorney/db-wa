@@ -29,17 +29,10 @@ mysql_close();
 <html>
 <head>
 
-
-
 <title>mockupDBpage</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
 <META HTTP-EQUIV="REFRESH" content="<?php echo($songLength); ?>;URL=http://localhost/db-wa/">
-
-<!--Either somehow has to change 60 to the length of the current track
-	or not refresh, instead loop updating the current track and now playing queue
-	and playing the next song when the current song finishes..? -->
-
 
 <script src="nowPlaying.js" type="text/javascript"></script>
 <style type='text/css'>
@@ -125,15 +118,13 @@ body {
 			<!-- end Queue -->
 			
 
-			<!-- Empty Queue message -->
+			<!-- Low Queue message -->
 			<?php
 			if ($num<$minQueue){
 			echo "<font face=\"Arial, Helvetica, sans-serif\" color=\"white\" size=\"6\">!!!Low Queue--Send Requests!!! <br /> </font>";
 			}
 					
-			?>
-			
-
+			?>	
 
 		 </td>
 	</tr>
