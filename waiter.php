@@ -92,7 +92,8 @@ p.ttle{
 #content {position:absolute; top:0; bottom:0; left:0; right:0;
 			margin:auto; height:75%; width:90%;}
 </style>
-<script src="raphael.js"></script>
+<!--<script src="raphael.js"></script>-->
+<script src="processing.js"></script>
 </head>
 <center>
 
@@ -114,6 +115,49 @@ table1.onMouseOver = function(){
 };
 </script>
 -->
+
+<script type="text/processing" data-processing-target="mycanvas">
+	int valueX = 10;
+	int valueY = 10;
+
+void setup(){
+	size(800,600);
+	//background();
+	fill(255,0,0);
+	rect(10,10,100,50,10);
+	
+}
+
+void draw(){
+	background();
+	line(0, 0, width, height);
+	rect(valueX,valueY,100,50,10);
+	rect(10,70,100,50,10);
+	rect(10,130,100,50,10);
+	rect(10,190,100,50,10);
+}
+
+mouseDragged(){
+	valueX = valueX+mouseX;
+	valueY = valueY+mouseY;
+}
+
+
+
+</script>
+<canvas id="mycanvas"></canvas>
+
+
+
+
+
+
+
+
+
+
+
+
 <table>
 <td></td>
 </table>
