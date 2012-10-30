@@ -21,7 +21,7 @@ if(mysql_num_rows($result) > 0) {
 //if no results were returned
 else {
 	$response["success"] = 1;
-	$response["message"] = "No songs in library.";
+	$response["message"] = "No songs in queue.";
 	echo "Error: " . mysql_error()."<br>";
 	echo json_encode($response);
 }
