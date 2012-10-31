@@ -3,40 +3,54 @@
 $response = array();
 if(!isset($_POST["songID"])) {
 //song ID parameter wasn't properly set
+	$response["success"] = "1";
 	$response["message"] = "Error: song ID not found.";
-	echo json_encode($response);
-	die("Error: song ID not found.");
+	die(json_encode($response));
+}
+if(!isset($_POST["t_num"])) {
+//table number wasn't set
+	$response["success"] = "1";
+	$response["message"] = "Error: table number not found.";
+	die(json_encode($response));
+}
+if(!isset($_POST["t_code"])) {
+//table code wasn't set
+	$response["success"] = "1";
+	$response["message"] = "Error: table code not found.";
+	die(json_encode($response));
+}
+if(!isset($_POST["req_type"])) {
+//request type wasn't set
+	$response["success"] = "1";
+	$response["message"] = "Error: request type not found.";
+	die(json_encode($response));
 }
 
-$con = mysql_connect("localhost");
-if(!mysql_select_db("droidbox", $con)) {
-	die("Unable to select database. " . mysql_error());
-}
-
-//check if the requested song is already in the queue
-$sql = "SELECT id FROM queue WHERE id = ". $_POST["songID"];
-$result = mysql_query($sql, $con);
-//this song is already in the queue
-if(mysql_num_rows($result) > 0) {
+$sql = new mysqli("localhost");
+if(!$sql->select_db("droidbox")) {	
 	$response["success"] = 1;
-	$response["message"] = "Song is already in the queue";
+	$response["message"] = "Unable to select database. " . $sql->error;
+	die(json_encode($response));
 }
-//this song can be added to the queue
+//execute stored proc call, check that it returned a result
+$cmd = "CALL request_song(".$_POST["songID"].",".$_POST["t_num"].",".$_POST["t_code"].",".$_POST["req_type"].",". 
+						"@success, @message); SELECT @success, @message;";
+if($sql->multi_query($cmd)) {
+	//read results from the request
+	do {			
+		if($result = $sql->store_result()) {
+			$row = $result->fetch_row();
+			$response["success"] = $row[0];
+			$response["message"] = $row[1];
+			$result->free();
+		}				
+	} while($sql->next_result());	
+	$sql->close();
+	die(json_encode($response));
+}
 else {
-	$sql = "INSERT INTO queue VALUES (" . 
-			$_POST["songID"] . ", " .
-			0 . ", " .
-			0 . ", " .
-			"now() );";
-	if(!mysql_query($sql, $con)) {
-		$response["success"] = 1;
-		$response["message"] = "Error: " . mysql_error();
-		$response["sql"] = $sql;
-	}
-	else {
-		$response["success"] = 0;
-		$response["message"] = "Song successfully requested.";
-	}
+	$response["success"] = 1;
+	$response["message"] = "Error: " . $sql->error;
+	die(json_encode($response));
 }
-echo json_encode($response);
 ?>
