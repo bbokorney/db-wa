@@ -128,11 +128,11 @@ $f8=mysql_result($result,$i,"num_played");
 <tr>
 <td><input type="checkbox" name="songDelete[<?php echo $i; ?>]" value="1"></td>
 <td><input type="checkbox" name="songEnabled[<?php echo $i; ?>]" value="1" <?php if($f1 == "1") {echo "checked";} ?>></td>
-<td><input type="hidden" name="songID[<?php echo $i; ?>]" maxlength="80" value="<?=$f2;?>" size=5 />
+<td><input type="hidden" name="songID[<?php echo $i; ?>]" maxlength="80" value="<?php echo $f2;?>" size=5 />
 <font face="Arial, Helvetica, sans-serif"><?php echo $f2; ?></font></td>
-<td><input type="text" name="songTitle[<?php echo $i; ?>]" maxlength="80" value="<?=$f3;?>" size=30 /></td>
-<td><input type="text" name="songArtist[<?php echo $i; ?>]" maxlength="50" value="<?=$f4;?>" /></td>
-<td><input type="text" name="songAlbum[<?php echo $i; ?>]" maxlength="50" value="<?=$f5;?>" /></td>
+<td><input type="text" name="songTitle[<?php echo $i; ?>]" maxlength="80" value="<?php echo $f3;?>" size=30 /></td>
+<td><input type="text" name="songArtist[<?php echo $i; ?>]" maxlength="50" value="<?php echo $f4;?>" /></td>
+<td><input type="text" name="songAlbum[<?php echo $i; ?>]" maxlength="50" value="<?php echo $f5;?>" /></td>
 
 <td><select name="songGenre[<?php echo $i; ?>]">
 <option <?php if($f6 == "Blues") {echo "selected";} ?> value="Blues" >Blues</option>
@@ -146,9 +146,9 @@ $f8=mysql_result($result,$i,"num_played");
 <option <?php if($f6 == "Unknown") {echo "selected";} ?> value="Unknown" >Unknown</option>
 </select></td>
 
-<td><input type="hidden" name="songLength[<?php echo $i; ?>]" maxlength="50" value="<?=$f7;?>" size=5 />
+<td><input type="hidden" name="songLength[<?php echo $i; ?>]" maxlength="50" value="<?php echo $f7;?>" size=5 />
 <font face="Arial, Helvetica, sans-serif"><?php echo $f7; ?></font></td>
-<td><input type="hidden" name="songPlayCount[<?php echo $i; ?>]" maxlength="50" value="<?=$f8;?>" size=5 />
+<td><input type="hidden" name="songPlayCount[<?php echo $i; ?>]" maxlength="50" value="<?php echo $f8;?>" size=5 />
 <font face="Arial, Helvetica, sans-serif"><?php echo $f8; ?></font></td>
 </tr>
 
@@ -157,7 +157,7 @@ $i++;
 }
 ?>
 
-<input type="hidden" name="songNum" value="<?=$num;?>" />
+<input type="hidden" name="songNum" value="<?php echo $num;?>" />
 
 </form>
 
