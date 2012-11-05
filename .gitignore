@@ -3,3 +3,6 @@
 library/
 newmusic/
 droidbox-test/
+.DS_Store
+
+database/.DS_Store
