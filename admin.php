@@ -24,6 +24,7 @@ if($_POST['dbUpdate'] == "Update Library Information")
 	
 	$varNum = $_POST['songNum'];
 	$varID = $_POST['songID'];	
+	$varDelete = $_POST['songDelete'];
 	$varEnabled = $_POST['songEnabled'];
 	$varTitle = $_POST['songTitle'];
 	$varArtist = $_POST['songArtist'];
@@ -46,8 +47,13 @@ if($_POST['dbUpdate'] == "Update Library Information")
 
 		while ($i < $varNum) {
 			//echo "UPDATE song SET enabled=\"".$varEnabled[$i]."\", title=\"".$varTitle[$i]."\", artist=\"".$varArtist[$i]."\", album=\"".$varAlbum[$i]."\", genre=\"".$varGenre[$i]."\" WHERE id=\"".$varID[$i]."\"; <br />" ;
-
+			if($varDelete[$i] == 1){
+			//echo "DELETE FROM song WHERE id=\"".$varID[$i]."\"";
+			$query="DELETE FROM song WHERE id=\"".$varID[$i]."\"";
+			}
+			else {
 			$query="UPDATE song SET enabled=\"".$varEnabled[$i]."\", title=\"".$varTitle[$i]."\", artist=\"".$varArtist[$i]."\", album=\"".$varAlbum[$i]."\", genre=\"".$varGenre[$i]."\" WHERE id=\"".$varID[$i]."\"";
+			}
 			mysql_query($query);
 
 		$i++;
@@ -81,7 +87,8 @@ mysql_close();
 
 <table border="0" cellspacing="2" cellpadding="2">
 <tr>
-<td><font face="Arial, Helvetica, sans-serif">Enabled</font></td>
+<td><font face="Arial, Helvetica, sans-serif">DELETE?</font></td>
+<td><font face="Arial, Helvetica, sans-serif">Enabled/<br />Disabled</font></td>
 <td><font face="Arial, Helvetica, sans-serif">ID</font></td>
 <td><font face="Arial, Helvetica, sans-serif">Title</font></td>
 <td><font face="Arial, Helvetica, sans-serif">Artist</font></td>
@@ -106,6 +113,7 @@ $f8=mysql_result($result,$i,"num_played");
 ?>
 
 <tr>
+<td><input type="checkbox" name="songDelete[<?php echo $i; ?>]" value="1"></td>
 <td><input type="checkbox" name="songEnabled[<?php echo $i; ?>]" value="1" <?php if($f1 == "1") {echo "checked";} ?>></td>
 <td><input type="hidden" name="songID[<?php echo $i; ?>]" maxlength="80" value="<?=$f2;?>" size=5 />
 <font face="Arial, Helvetica, sans-serif"><?php echo $f2; ?></font></td>
