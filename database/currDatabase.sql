@@ -297,3 +297,27 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2012-10-02 11:46:59
+
+-- Table structure for table `queue`
+--
+
+DROP TABLE IF EXISTS `constants`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `constants` (
+  `constantKey` nvarchar(255) NOT NULL,
+  `constantValue` int(11) NOT NULL,
+  PRIMARY KEY (`constantKey`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `queue`
+--
+
+LOCK TABLES `constants` WRITE;
+/*!40000 ALTER TABLE `constants` DISABLE KEYS */;
+INSERT INTO `constants` VALUES ("clear_queue",1),("request_type",1),("priceOfRequest", 25 -- (in cents)
+);
+/*!40000 ALTER TABLE `constants` ENABLE KEYS */;
+UNLOCK TABLES;
