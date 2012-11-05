@@ -9,7 +9,6 @@ if (isset($_COOKIE['PrivatePageLogin'])) {
 ?>
 <!-- pw stuff-->
 
-
 <html>
 <body>
 <?php
@@ -17,6 +16,41 @@ $username="root";
 $password="droidbox";
 $database="droidbox";
 
+//Handle updated information
+if($_POST['dbUpdate'] == "Update Library Information")
+{
+	$errorMessage = "";
+	
+	//$varNum = $_POST['num'];
+	$varID = $_POST['songID'];	
+	$varEnabled = $_POST['songEnabled'];
+	$varTitle = $_POST['songTitle'];
+	$varArtist = $_POST['songArtist'];
+	$varAlbum = $_POST['songAlbum'];
+	$varGenre = $_POST['songGenre'];
+	$varLength = $_POST['songLength'];
+	$varPlayCount = $_POST['songPlayCount'];
+
+	echo "UPDATE song SET enabled=".$varEnabled[0].", title=".$varTitle[0].", artist=".$varArtist[0].", album=".$varAlbum[0].", genre=".$varGenre[0]." WHERE id=".$varID[0].";\n" ;
+
+	if(empty($errorMessage)) 
+	{
+		//$fs = fopen("mydata.csv","a");
+		//fwrite($fs,$varName . ", " . $varMovie . "\n");
+		//fclose($fs);
+		
+		mysql_connect("localhost");
+		@mysql_select_db($database) or die( "Unable to select database");
+		$query="UPDATE song SET enabled=\"".$varEnabled[0]."\", title=\"".$varTitle[0]."\", artist=\"".$varArtist[0]."\", album=\"".$varAlbum[0]."\", genre=\"".$varGenre[0]."\" WHERE id=\"".$varID[0]."\"";
+		mysql_query($query);
+		mysql_close();
+
+		//header("Location: thank-you.html");
+		//exit;
+	}
+}
+
+//Populate new table
 mysql_connect("localhost");
 @mysql_select_db($database) or die( "Unable to select database");
 $query="SELECT * FROM song";
@@ -26,6 +60,15 @@ $num=mysql_numrows($result);
 
 mysql_close();
 ?>
+
+<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+
+<input type="submit" name="dbUpdate" value="Update Library Information" />
+<input type="submit" name="inportMusic" value="Import Music In Music Folder" />
+<input type="text" name="searchQuery" maxlength="80" value="Search for text..." />
+<input type="submit" name="searchSubmit" value="Search" />
+
+
 <table border="0" cellspacing="2" cellpadding="2">
 <tr>
 <td><font face="Arial, Helvetica, sans-serif">Enabled</font></td>
@@ -53,20 +96,38 @@ $f8=mysql_result($result,$i,"num_played");
 ?>
 
 <tr>
-<td><font face="Arial, Helvetica, sans-serif"><?php echo $f1; ?></font></td>
-<td><font face="Arial, Helvetica, sans-serif"><?php echo $f2; ?></font></td>
-<td><font face="Arial, Helvetica, sans-serif"><?php echo $f3; ?></font></td>
-<td><font face="Arial, Helvetica, sans-serif"><?php echo $f4; ?></font></td>
-<td><font face="Arial, Helvetica, sans-serif"><?php echo $f5; ?></font></td>
-<td><font face="Arial, Helvetica, sans-serif"><?php echo $f6; ?></font></td>
-<td><font face="Arial, Helvetica, sans-serif"><?php echo $f7; ?></font></td>
-<td><font face="Arial, Helvetica, sans-serif"><?php echo $f8; ?></font></td>
+<td><input type="checkbox" name="songEnabled[<?php echo $i; ?>]" value="1" <?php if($f1 == "1") {echo "checked";} ?>></td>
+<td><input type="hidden" name="songID[<?php echo $i; ?>]" maxlength="80" value="<?=$f2;?>" size=5 />
+<font face="Arial, Helvetica, sans-serif"><?php echo $f2; ?></font></td>
+<td><input type="text" name="songTitle[<?php echo $i; ?>]" maxlength="80" value="<?=$f3;?>" size=30 /></td>
+<td><input type="text" name="songArtist[<?php echo $i; ?>]" maxlength="50" value="<?=$f4;?>" /></td>
+<td><input type="text" name="songAlbum[<?php echo $i; ?>]" maxlength="50" value="<?=$f5;?>" /></td>
+
+<td><select name="songGenre[<?php echo $i; ?>]">
+<option <?php if($f6 == "Blues") {echo "selected";} ?> value="Blues" >Blues</option>
+<option <?php if($f6 == "Classical") {echo "selected";} ?> value="Classical" >Classical</option>
+<option <?php if($f6 == "Country") {echo "selected";} ?> value="Country" >Country</option>
+<option <?php if($f6 == "Electronic/Indie") {echo "selected";} ?> value="Electronic/Indie" >Electronic/Indie</option>
+<option <?php if($f6 == "Folk") {echo "selected";} ?> value="Folk" >Folk</option>
+<option <?php if($f6 == "Jazz") {echo "selected";} ?> value="Jazz" >Jazz</option>
+<option <?php if($f6 == "Reggae") {echo "selected";} ?> value="Reggae" >Reggae</option>
+<option <?php if($f6 == "Rock") {echo "selected";} ?> value="Rock" >Rock</option>
+<option <?php if($f6 == "Unknown") {echo "selected";} ?> value="Unknown" >Unknown</option>
+</select></td>
+
+<td><input type="hidden" name="songLength[<?php echo $i; ?>]" maxlength="50" value="<?=$f7;?>" size=5 />
+<font face="Arial, Helvetica, sans-serif"><?php echo $f7; ?></font></td>
+<td><input type="hidden" name="songPlayCount[<?php echo $i; ?>]" maxlength="50" value="<?=$f8;?>" size=5 />
+<font face="Arial, Helvetica, sans-serif"><?php echo $f8; ?></font></td>
 </tr>
 
 <?php
 $i++;
 }
 ?>
+
+</form>
+
 </body>
 </html>
 
