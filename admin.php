@@ -69,7 +69,20 @@ if($_POST['dbUpdate'] == "Update Library Information")
 //Populate new table
 mysql_connect("localhost");
 @mysql_select_db($database) or die( "Unable to select database");
+
+//Did the page get generated from the search button?
+if($_POST['searchSubmit'] == "Search" && $_POST['searchQuery'] != "Search for text...") {
+//echo "SELECT * FROM song WHERE title LIKE \"".$_POST['searchQuery']."\" OR artist LIKE \"".$_POST['searchQuery']."\" OR album LIKE \"".$_POST['searchQuery']."\" OR genre LIKE \"".$_POST['searchQuery']."\" <br />";
+$query="SELECT * FROM song 
+WHERE title LIKE \"%".$_POST['searchQuery']."%\" 
+OR artist LIKE \"%".$_POST['searchQuery']."%\" 
+OR album LIKE \"%".$_POST['searchQuery']."%\" 
+OR genre LIKE \"%".$_POST['searchQuery']."%\"";
+}
+else {
 $query="SELECT * FROM song";
+}
+
 $result=mysql_query($query);
 
 $num=mysql_numrows($result);
@@ -80,7 +93,7 @@ mysql_close();
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
 
 <input type="submit" name="dbUpdate" value="Update Library Information" />
-<input type="submit" name="inportMusic" value="Import Music In Music Folder" />
+<input type="submit" name="importMusic" value="Import Music In Music Folder" />
 <input type="text" name="searchQuery" maxlength="80" value="Search for text..." />
 <input type="submit" name="searchSubmit" value="Search" />
 
