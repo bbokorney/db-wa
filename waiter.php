@@ -1,3 +1,4 @@
+<head>
 <?php
 $username="root";
 $password="droidbox";
@@ -9,18 +10,6 @@ mysql_connect("localhost");
 mysql_close();
 ?>
 
-<!-- attempting to add password protection!-->
-<?php
-$username = "droidbox";
-$password = "droidbox";
-$nonsense = "supercalifragilisticexpialidocious";
-
-if (isset($_COOKIE['PrivatePageLogin'])) {
-   if ($_COOKIE['PrivatePageLogin'] == md5($password.$nonsense)) {
-?>
-
-<!-- EVERYTHING FOR WAITER PAGE SHOULD BE INSIDE HERE-->
-
     <title>waiterPage</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
@@ -29,6 +18,9 @@ if (isset($_COOKIE['PrivatePageLogin'])) {
 		background-image: url('images/bg.png');
 		background-repeat:repeat;
 		text-shadow: 3px 3px 3px #000;
+		font-family: "Bank Gothic";
+		color: FFFFFF;
+		font-size: 12px;
 	}
 	p.ttle{
 		font-family: "Capture it";
@@ -63,7 +55,7 @@ if (isset($_COOKIE['PrivatePageLogin'])) {
 		margin:auto; height:75%; width:90%;
 	}
 	</style>
-	<!--<script src="raphael.js"></script>-->
+	<script src="raphael.js"></script>
 	<script src="processing.js"></script>
 	</head>
 	<center>
@@ -72,86 +64,64 @@ if (isset($_COOKIE['PrivatePageLogin'])) {
 	<font color="white">Waiter Page</font>
 	</p>
 
-<!--
-<script type="text/javascript">
-// Creates canvas 320 × 200 at 10, 50
-var paper = Raphael(10, 50, 800, 600);
 
-var table1 = paper.rect(40, 40, 200, 100, 10);
-table1.attr("fill", "#fff");
-table1.attr("stroke", "#000");
+<!--Trying this-->
+<body>
+<?php
+$username="root";
+$password="droidbox";
+$database="droidbox";
 
-table1.onMouseOver = function(){
-	table1.attr("fill", "#ff0");
-};
-</script>
--->
+mysql_connect("localhost");
+@mysql_select_db($database) or die( "Unable to select database");
+$query="SELECT * FROM song";
+$result=mysql_query($query);
 
-	<script type="text/processing" data-processing-target="mycanvas">
-	int valueX = 10;
-	int valueY = 10;
+$num=mysql_numrows($result);
 
-	void setup(){
-		size(800,600);
-		//background();
-		fill(255,0,0);
-		rect(10,10,100,50,10);
-	}
+mysql_close();
+?>
+<table border="0" cellspacing="2" cellpadding="2">
+<tr>
+<td>Table Number</td>
+<td>  </td>
+<td>  </td>
+<td>  </td>
+<td>  </td>
+<td>Number of Requests</td>
+<td>  </td>
+<td>  </td>
+<td>Actions</td>
 
-	void draw(){
-		background();
-		line(0, 0, width, height);
-		rect(valueX,valueY,100,50,10);
-		rect(10,70,100,50,10);
-		rect(10,130,100,50,10);
-		rect(10,190,100,50,10);
-	}
-
-	mouseDragged(){
-	valueX = valueX+mouseX;
-	valueY = valueY+mouseY;
-}
-</script>
-<canvas id="mycanvas"></canvas>
-<table>
-<td></td>
-</table>
-</center>
-</html>
-
-<!--End waiter page stuff, below is the other part of the password protection-->
+</tr>
 
 <?php
-      exit;
-   } else {
-      echo "Bad Cookie.";
-      exit;
-   }
-}
+$i=0;
+while ($i < $num) {
 
-if (isset($_GET['p']) && $_GET['p'] == "login") {
-   if ($_POST['user'] != $username) {
-      echo "Sorry, that username does not match.";
-      exit;
-   } else if ($_POST['keypass'] != $password) {
-      echo "Sorry, that password does not match.";
-      exit;
-   } else if ($_POST['user'] == $username && $_POST['keypass'] == $password) {
-      setcookie('PrivatePageLogin', md5($_POST['keypass'].$nonsense));
-      header("Location: $_SERVER[PHP_SELF]");
-   } else {
-      echo "Sorry, you could not be logged in at this time.";
-   }
-}
+$f1=mysql_result($result,$i,"tableNumber");
+$f2=mysql_result($result,$i,"numRequests");
+
 ?>
 
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>?p=login" method="post">
-<label><input type="text" name="user" id="user" /> Name</label><br />
-<label><input type="password" name="keypass" id="keypass" /> Password</label><br />
-<input type="submit" id="submit" value="Login" />
-</form>
-<!-- end password protection -->
+<tr>
+<td><?php echo $f1; ?></td>
+<td>  </td>
+<td>  </td>
+<td>  </td>
+<td>  </td>
+<td><?php echo $f2; ?></td>
+<td>  </td>
+<td>  </td>
+<td><button type="button" onclick="alert('Hello world!')">Enable</button></td>
+</tr>
 
-
+<?php
+$i++;
+}
+?>
+</center>
+</body>
+</html>
 
 
