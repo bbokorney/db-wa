@@ -74,7 +74,7 @@ $database="droidbox";
 
 mysql_connect("localhost");
 @mysql_select_db($database) or die( "Unable to select database");
-$query="SELECT * FROM song";
+$query="SELECT * FROM payment";
 $result=mysql_query($query);
 
 $num=mysql_numrows($result);
@@ -86,6 +86,7 @@ mysql_close();
 <td>Table Number</td>
 <td>  </td>
 <td>  </td>
+<td>Table ID</td>
 <td>  </td>
 <td>  </td>
 <td>Number of Requests</td>
@@ -99,8 +100,10 @@ mysql_close();
 $i=0;
 while ($i < $num) {
 
-$f1=mysql_result($result,$i,"tableNumber");
-$f2=mysql_result($result,$i,"numRequests");
+$f1=mysql_result($result,$i,"table_num");
+$f2=mysql_result($result,$i,"id_num");
+$f3=mysql_result($result,$i,"num_requests");
+
 
 ?>
 
@@ -108,9 +111,10 @@ $f2=mysql_result($result,$i,"numRequests");
 <td><?php echo $f1; ?></td>
 <td>  </td>
 <td>  </td>
-<td>  </td>
-<td>  </td>
 <td><?php echo $f2; ?></td>
+<td>  </td>
+<td>  </td>
+<td><?php echo $f3; ?></td>
 <td>  </td>
 <td>  </td>
 <td><button type="button" onclick="alert('Hello world!')">Enable</button></td>
