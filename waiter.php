@@ -9,6 +9,10 @@ mysql_connect("localhost");
 mysql_close();
 ?>
 
+
+<!-- autorefresh every 15 seconds to maintain an updated queue -->
+<?php header('Refresh: 15'); ?>
+
 <!-- attempting to add password protection!-->
 <?php
 $username = "droidbox";
@@ -19,7 +23,7 @@ if (isset($_COOKIE['PrivatePageLogin'])) {
    if ($_COOKIE['PrivatePageLogin'] == md5($password.$nonsense)) {
 ?>
 
-<!-- EVERYTHING FOR WAITER PAGE SHOULD BE INSIDE HERE-->
+<!-- EVERYTHING FOR WAITER PAGE SHOULD BE BELOW HERE-->
 
     <title>waiterPage</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
