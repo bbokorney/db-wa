@@ -20,8 +20,9 @@ $database="droidbox";
 if($_POST['dbUpdate'] == "Update Library Information")
 {
 	$errorMessage = "";
+	$i=0;
 	
-	//$varNum = $_POST['num'];
+	$varNum = $_POST['songNum'];
 	$varID = $_POST['songID'];	
 	$varEnabled = $_POST['songEnabled'];
 	$varTitle = $_POST['songTitle'];
@@ -31,23 +32,32 @@ if($_POST['dbUpdate'] == "Update Library Information")
 	$varLength = $_POST['songLength'];
 	$varPlayCount = $_POST['songPlayCount'];
 
-	echo "UPDATE song SET enabled=".$varEnabled[0].", title=".$varTitle[0].", artist=".$varArtist[0].", album=".$varAlbum[0].", genre=".$varGenre[0]." WHERE id=".$varID[0].";\n" ;
+	//echo "debug: ".$varNum."<br />";
+	//echo "UPDATE song SET enabled=\"".$varEnabled[$i]."\", title=\"".$varTitle[$i]."\", artist=\"".$varArtist[$i]."\", album=\"".$varAlbum[$i]."\", genre=\"".$varGenre[$i]."\" WHERE id=\"".$varID[$i]."\"; <br />" ;
 
-	if(empty($errorMessage)) 
-	{
+	//if(empty($errorMessage)) 
+	//{
 		//$fs = fopen("mydata.csv","a");
 		//fwrite($fs,$varName . ", " . $varMovie . "\n");
 		//fclose($fs);
 		
 		mysql_connect("localhost");
 		@mysql_select_db($database) or die( "Unable to select database");
-		$query="UPDATE song SET enabled=\"".$varEnabled[0]."\", title=\"".$varTitle[0]."\", artist=\"".$varArtist[0]."\", album=\"".$varAlbum[0]."\", genre=\"".$varGenre[0]."\" WHERE id=\"".$varID[0]."\"";
-		mysql_query($query);
+
+		while ($i < $varNum) {
+			//echo "UPDATE song SET enabled=\"".$varEnabled[$i]."\", title=\"".$varTitle[$i]."\", artist=\"".$varArtist[$i]."\", album=\"".$varAlbum[$i]."\", genre=\"".$varGenre[$i]."\" WHERE id=\"".$varID[$i]."\"; <br />" ;
+
+			$query="UPDATE song SET enabled=\"".$varEnabled[$i]."\", title=\"".$varTitle[$i]."\", artist=\"".$varArtist[$i]."\", album=\"".$varAlbum[$i]."\", genre=\"".$varGenre[$i]."\" WHERE id=\"".$varID[$i]."\"";
+			mysql_query($query);
+
+		$i++;
+		}
+
 		mysql_close();
 
 		//header("Location: thank-you.html");
 		//exit;
-	}
+	//}
 }
 
 //Populate new table
@@ -125,6 +135,8 @@ $f8=mysql_result($result,$i,"num_played");
 $i++;
 }
 ?>
+
+<input type="hidden" name="songNum" value="<?=$num;?>" />
 
 </form>
 
