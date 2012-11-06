@@ -128,7 +128,12 @@ $f3=mysql_result($result,$i,"num_requests");
 <td><?php echo $f3; ?></td>
 <td>  </td>
 <td>  </td>
-<td><button type="button" onclick="alert('Hello world!')">Enable</button></td>
+<td><form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+  <input type="submit" name="submit" value="Close">
+</form>
+<?php if(isset($_POST['submit'])) {
+echo "close_table($f1)";
+}?></td>
 </tr>
 
 <?php
@@ -136,6 +141,90 @@ $i++;
 }
 ?>
 </center>
+
+</body>
+
+
+
+
+
+
+
+
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>
 
