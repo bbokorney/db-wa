@@ -10,17 +10,8 @@ if (isset($_COOKIE['PrivatePageLogin'])) {
 <!-- pw stuff-->
 
 <head>
-<?php
-$username="root";
-$password="droidbox";
-$database="droidbox";
 
-mysql_connect("localhost");
-@mysql_select_db($database) or die( "Unable to select database");
-
-mysql_close();
-?>
-
+	
     <title>waiterPage</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
@@ -84,7 +75,7 @@ $password="droidbox";
 $database="droidbox";
 
 mysql_connect("localhost");
-@mysql_select_db($database) or die( "Unable to select database");
+mysql_select_db($database) or die( "Unable to select database");
 $query="SELECT * FROM payment";
 $result=mysql_query($query);
 
@@ -92,6 +83,36 @@ $num=mysql_numrows($result);
 
 mysql_close();
 ?>
+
+
+
+<td><input type="text" name="New Table[<?php echo $i; ?>]" maxlength="5" value="<?php echo $f9;?>" size=5 /></td>
+<td><form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+  <input type="submit" name="submit" value="Open Table">
+</form>
+<?php if(isset($_POST['submit'])) 
+{
+
+$username="root";
+$password="droidbox";
+$database="droidbox";
+
+mysql_connect("localhost");
+@mysql_select_db($database) or die( "Unable to select database");
+
+
+
+	$f9 = 7;
+	echo "f9 =".$f9."<br>";
+	$cmd = "CALL open_table(".$f9.", @success, @message, @id_num);";
+	echo $cmd."<br>";	
+	mysql_query($cmd);
+	echo mysql_error()."<br>";
+
+mysql_close();	
+}
+?></td>
+
 <table border="0" cellspacing="2" cellpadding="2">
 <tr>
 <td>Table Number</td>
@@ -110,121 +131,34 @@ mysql_close();
 <?php
 $i=0;
 while ($i < $num) {
-
-$f1=mysql_result($result,$i,"table_num");
-$f2=mysql_result($result,$i,"id_num");
-$f3=mysql_result($result,$i,"num_requests");
-
-
+	$f1=mysql_result($result,$i,"table_num");
+	$f2=mysql_result($result,$i,"id_num");
+	$f3=mysql_result($result,$i,"num_requests");
 ?>
+	<tr>
+	<td><?php echo $f1; ?></td>
+	<td>  </td>
+	<td>  </td>
+	<td><?php echo $f2; ?></td>
+	<td>  </td>
+	<td>  </td>
+	<td><?php echo $f3; ?></td>
+	<td>  </td>
+	<td>  </td>
+	<td><form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+	<input type="submit" name="submit" value="Close">
+	</form>
+	<?php if(isset($_POST['submit'])) {
+	$cmd = "CALL close_table(".$f1." @success, @message); SELECT @success, @message;";
+	mysql_query($cmd);	
+	}?></td>
+	</tr>
 
-<tr>
-<td><?php echo $f1; ?></td>
-<td>  </td>
-<td>  </td>
-<td><?php echo $f2; ?></td>
-<td>  </td>
-<td>  </td>
-<td><?php echo $f3; ?></td>
-<td>  </td>
-<td>  </td>
-<td><form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-  <input type="submit" name="submit" value="Close">
-</form>
-<?php if(isset($_POST['submit'])) {
-echo "close_table($f1)";
-}?></td>
-</tr>
-
-<?php
-$i++;
+	<?php
+	$i++;
 }
-?>
+	?>
 </center>
-
-</body>
-
-
-
-
-
-
-
-
-
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </body>
 </html>
 
