@@ -84,12 +84,11 @@ $num=mysql_numrows($result);
 mysql_close();
 ?>
 
+<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+<label><input type="text" name="user" id="user" maxlength="5" /> New Table #</label><br />
+<input type="submit" name="dbUpdate" value="Open Table" />
 
 
-<td><input type="text" name="New Table[<?php echo $i; ?>]" maxlength="5" value="<?php echo $f9;?>" size=5 /></td>
-<td><form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-  <input type="submit" name="submit" value="Open Table">
-</form>
 <?php if(isset($_POST['submit'])) 
 {
 
@@ -99,9 +98,7 @@ $database="droidbox";
 
 mysql_connect("localhost");
 @mysql_select_db($database) or die( "Unable to select database");
-
-
-
+	echo "f9 =".$f9."<br>";
 	$f9 = 7;
 	echo "f9 =".$f9."<br>";
 	$cmd = "CALL open_table(".$f9.", @success, @message, @id_num);";
