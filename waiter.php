@@ -1,3 +1,5 @@
+<?php header('Refresh: 10'); ?>
+
 <!--password protection stuff-->
 <?php
 $username = "droidbox";
