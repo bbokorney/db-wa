@@ -2,6 +2,7 @@ delimiter $$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `open_table`(
 	IN table_number int(11),
+	IN nick_name varchar(255),
 	OUT success int,
 	OUT message varchar(255),
 	OUT id_number int(11)
@@ -36,6 +37,7 @@ proc:BEGIN
 	INSERT INTO payment VALUES (
 			table_number,
 			id_number,
+			nick_name,
 			0
 		);
 END$$
