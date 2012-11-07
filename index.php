@@ -27,7 +27,7 @@ if(isset($_SESSION["curr_song_id"])) {
 	$curr_song_id = $_SESSION["curr_song_id"];
 }
 else {
-	echo "Current song id not set.<br>";
+	$songLength = 3;
 }
 
 //execute stored proc call, check that it returned a result
