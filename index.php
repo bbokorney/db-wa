@@ -11,30 +11,56 @@ if (isset($_COOKIE['PrivatePageLogin'])) {
 
 <!-- Genereates sql queries -->
 <?php
-$username="root";
-$password="droidbox";
-$database="droidbox";
-
-//mysql_connect(localhost,$username,$password);
-mysql_connect("localhost");
-@mysql_select_db($database) or die( "Unable to select database");
-$query="select title,artist,file_path,length from song,queue WHERE id = songID ORDER BY priority,request_type,time_requested LIMIT 4 OFFSET 1";
-$result=mysql_query($query);
-
-$query="select title,artist,file_path,length from song,queue WHERE id = songID ORDER BY priority,request_type,time_requested LIMIT 1";
-$now_playing=mysql_query($query);
-
-$num=mysql_numrows($result);
-$filepath = ".";
-$songLength = -1;
-if(mysql_numrows($now_playing) > 0) {
-	$filepath=mysql_result($now_playing,0,"file_path");
-	$songLength=mysql_result($now_playing,0,"length");
+session_start();
+$sql = new mysqli("localhost");
+if(!$sql->select_db("droidbox")) {	
+	die("Unable to connect to database.");
 }
-$query="delete from queue where songID=(SELECT id FROM song WHERE file_path=\"".$filepath."\")";
-$update_queue=mysql_query($query);
+$curr_song_id = -1;
+$title = null;
+$artist = null;
+$filepath = null;
+$songLength = -1;
 
-mysql_close();
+//check if this is the first time the jukebox has been started
+if(isset($_SESSION["curr_song_id"])) {
+	$curr_song_id = $_SESSION["curr_song_id"];
+}
+else {
+	echo "Current song id not set.<br>";
+}
+
+//execute stored proc call, check that it returned a result
+$cmd = "CALL get_next_song_queue(".$curr_song_id.");";
+$cmd .= "SELECT id,title,artist,file_path,length FROM song,queue 
+		WHERE id = songID ORDER BY request_type, priority DESC, time_requested LIMIT 1;";
+$cmd .= "SELECT id,title,artist,file_path,length FROM song,queue 
+		WHERE id = songID ORDER BY request_type, priority DESC, time_requested LIMIT 4 OFFSET 1;";
+$curr_song_id = -1;
+if($sql->multi_query($cmd)) {
+	if(!$sql->next_result()) {
+		die("No next result.");		
+	}
+	if(!$result = $sql->store_result()) {
+		die("No result to store");
+	}
+	if(!$row = $result->fetch_row()) {
+		//die("No rows in result.");
+		$curr_song_id = -1;
+	}
+	else {
+		$_SESSION["curr_song_id"] = $row[0];
+		$curr_song_id = $row[0];
+		$title = $row[1];
+		$artist = $row[2];
+		$filepath = $row[3];
+		$songLength = $row[4];
+		$result->free();	
+	}
+}
+else {
+	die("Error: ".$sql->error."<br>");
+}
 ?>
 
 <html>
@@ -88,15 +114,12 @@ body {
 		<td>
 			<!-- Now Playing -->			
 			<font face="Arial, Helvetica, sans-serif" color="white" size="5">Now Playing:</font>
-			<?php
-			$descrip = "";
-			if(mysql_num_rows($now_playing) < 1) {
+			<?php				
+			if($curr_song_id == -1) {
 				$descrip =  "<br /> No song is currently playing.";
 			}
-			else {
-				$f1=mysql_result($now_playing,0,"title");
-				$f2=mysql_result($now_playing,0,"artist");
-				$descrip = "<br />".$f2." - ".$f1;
+			else {				
+				$descrip = "<br />".$title." - ".$artist;
 			}
 			?>
 			<font face="Arial, Helvetica, sans-serif" color="white" size="10"><?php echo $descrip; ?> </font>
@@ -112,18 +135,21 @@ body {
 			<font face="Arial, Helvetica, sans-serif" color="white" size="5">Coming Up:</font><br />
 
 			<?php
-			$i=0;
-			$minQueue=2;
-			while ($i < $num) {
-
-			$f1=mysql_result($result,$i,"title");
-			$f2=mysql_result($result,$i,"artist");
+			$count=0;
+			$minQueue=2;									
+			if(!$sql->next_result()) {
+				die("No next result.");		
+			}
+			if(!$result = $sql->store_result()) {
+				die("No result to store");
+			}
+			while($row = $result->fetch_row()) {
+				$title = $row[1];
+				$artist = $row[2];					
 			?>
-
-			<font face="Arial, Helvetica, sans-serif" color="white" size="6"><?php echo $i+1; echo ") ".$f2." - ".$f1."<br />"; ?> </font>
-
+			<font face="Arial, Helvetica, sans-serif" color="white" size="6"><?php echo $count+1; echo ") ".$title." - ".$artist."<br />"; ?> </font>
 			<?php
-			$i++;
+			++$count;
 			}
 			?>
 			<!-- end Queue -->
@@ -131,7 +157,7 @@ body {
 
 			<!-- Low Queue message -->
 			<?php
-			if ($num<$minQueue){
+			if ($count<$minQueue){
 			echo "<font face=\"Arial, Helvetica, sans-serif\" color=\"white\" size=\"6\">!!!Low Queue--Send Requests!!! <br /> </font>";
 			}
 					
