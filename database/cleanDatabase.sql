@@ -5,3 +5,4 @@ truncate playlist;
 truncate playlist_name;
 truncate queue;
 truncate song;
+truncate constants;
