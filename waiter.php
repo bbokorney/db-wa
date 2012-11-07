@@ -88,33 +88,29 @@ mysql_close();
 $f9 = $_POST["table"];
 ?>
 
-<!--<td><input type="text" name="help" maxlength="5" value="#" size=5 /></td>-->
 <td><form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-  <label><input type="text" name="table" maxlength="5" id="user" /> Table</label><br />
-  <input type="submit" name="submit" value="Open Table"></td>
+  <input type="submit" name="submit" value="Edit Tables"></td><br />
+  <label><input type="text" name="open_table" maxlength="5" id="user" /> Open Table</label><br />
+  <label><input type="text" name="close_table" maxlength="5" id="user" /> Close Table</label><br />
 </form>
 
 <?php if(isset($_POST['submit'])) 
 {
-$f9 = $_POST["table"];
+$f9 = $_POST["open_table"];
+$f10 = $_POST["close_table"];
 $username="root";
 $password="droidbox";
 $database="droidbox";
 
 mysql_connect("localhost");
 @mysql_select_db($database) or die( "Unable to select database");
-	//echo "f9 =".$f9."<br>";
-	//$f9 = 7;
-	//echo "f9 =".$f9."<br>";
-	$cmd = "CALL open_table(".$f9.", @success, @message, @id_num);";
-	//echo $cmd."<br>";	
+	$cmd = "CALL open_table(".$f9.", @success, @message, @id_num);";	
 	mysql_query($cmd);
-	//echo mysql_error()."<br>";
-
-mysql_close();	
+	$cmd = "CALL close_table(".$f10.", @success, @message, @id_num);";
+	mysql_query($cmd);
+	mysql_close();	
 }
 ?></td>
-
 <table border="0" cellspacing="2" cellpadding="2">
 <tr>
 <td>Table Number</td>
@@ -126,8 +122,9 @@ mysql_close();
 <td>Number of Requests</td>
 <td>  </td>
 <td>  </td>
+<!--
 <td>Actions</td>
-
+-->
 </tr>
 
 <?php
@@ -147,28 +144,12 @@ while ($i < $num) {
 	<td><?php echo $f3; ?></td>
 	<td>  </td>
 	<td>  </td>
+<!--
 	<td><form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
 	<input type="submit" name="submit" value="Close">
 	</form>
-	
-	<?php if(isset($_POST['submit'])) 
-	{
-		$username="root";
-		$password="droidbox";
-		$database="droidbox";
-		mysql_connect("localhost");
-		@mysql_select_db($database) or die( "Unable to select database");
-		echo mysql_error()."<br>";
-		}
-?></td><?php if(isset($_POST['submit'])) {
-		//$f1 = 1;
-		$cmd = "CALL close_table(".$f1.", @success, @message, @id_num);";
-		//echo $cmd."<br>";
-		//mysql_query($cmd);
-		//echo mysql_error()."<br>";	
-	}
-		mysql_close();	
-	?></td>
+-->
+	</td>
 	</tr>
 
 	<?php
