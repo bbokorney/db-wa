@@ -87,27 +87,29 @@ mysql_close();
 <?php
 $f9 = $_POST["table"];
 ?>
-<td><input type="text" name="help" maxlength="5" value="#" size=5 /></td>
+
+<!--<td><input type="text" name="help" maxlength="5" value="#" size=5 /></td>-->
 <td><form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+  <label><input type="text" name="table" maxlength="5" id="user" /> Table</label><br />
   <input type="submit" name="submit" value="Open Table"></td>
 </form>
 
 <?php if(isset($_POST['submit'])) 
 {
-//$f9 = $_POST["table"];
+$f9 = $_POST["table"];
 $username="root";
 $password="droidbox";
 $database="droidbox";
 
 mysql_connect("localhost");
 @mysql_select_db($database) or die( "Unable to select database");
-	echo "f9 =".$f9."<br>";
+	//echo "f9 =".$f9."<br>";
 	//$f9 = 7;
-	echo "f9 =".$f9."<br>";
+	//echo "f9 =".$f9."<br>";
 	$cmd = "CALL open_table(".$f9.", @success, @message, @id_num);";
-	echo $cmd."<br>";	
+	//echo $cmd."<br>";	
 	mysql_query($cmd);
-	echo mysql_error()."<br>";
+	//echo mysql_error()."<br>";
 
 mysql_close();	
 }
@@ -161,9 +163,9 @@ while ($i < $num) {
 ?></td><?php if(isset($_POST['submit'])) {
 		//$f1 = 1;
 		$cmd = "CALL close_table(".$f1.", @success, @message, @id_num);";
-		echo $cmd."<br>";
-		mysql_query($cmd);
-		echo mysql_error()."<br>";	
+		//echo $cmd."<br>";
+		//mysql_query($cmd);
+		//echo mysql_error()."<br>";	
 	}
 		mysql_close();	
 	?></td>
