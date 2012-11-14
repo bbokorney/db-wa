@@ -1,4 +1,4 @@
-<?php header('Refresh: 3'); ?>
+<!--<?php header('Refresh: 3'); ?>-->
 
 <!--password protection stuff-->
 <?php
@@ -10,19 +10,58 @@ if (isset($_COOKIE['PrivatePageLogin'])) {
    if ($_COOKIE['PrivatePageLogin'] == md5($password.$nonsense)) {
 ?>
 <!-- pw stuff-->
-
 <head>
 
+	
+    <title>waiterPage</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+	<style type='text/css'>
+	body {
+		background-image: url('images/bg.png');
+		background-repeat:repeat;
+		text-shadow: 3px 3px 3px #000;
+		font-family: "Bank Gothic";
+		color: FFFFFF;
+		font-size: 12px;
+	}
+	p.ttle{
+		font-family: "Capture it";
+		color: FFFFFF;
+		font-size: 39px;
+		font-weight:lighter;
+	}
+
+	@font-face {  
+		font-family:  Bank Gothic ;  
+  		src: local(fonts/bankGothic.ttf), url( /fonts/bankGothic.ttf ) format("truetype"); /* non-IE */  
+	}  
+
+	.element    { 	
+		font-family: "Bank Gothic"; color: FFFFFF;	font-size: 30px;
+		font-weight:lighter; position:absolute; 
+	}
+	#element-1    { color:lightblue; z-index:1; }
+	#element-2    { color:lightgreen; margin:10px 0 0 45px; z-index:2; }
+
+	.table {	display:table;}
+	.tr {    	display:table-row;}
+	.td {    	display:table-cell;}
+
+	@font-face {  
+ 		font-family:  Capture it ;  
+  		src: local(fonts/Capture it.ttf), url( /fonts/Capture it.ttf ) format("truetype"); /* non-IE */  
+	}  
+
+	#content {
+		position:absolute; top:0; bottom:0; left:0; right:0;
+		margin:auto; height:75%; width:90%;
+	}
 	</style>
 	<script src="raphael.js"></script>
 	<script src="processing.js"></script>
 	</head>
 	<center>
-
-	<p class = "ttle">
-	<font color="white">Waiter Page</font>
-	</p>
-
 
 <!--Trying this-->
 <body>
@@ -53,6 +92,9 @@ $f9 = $_POST["table"];
 <td>Table ID</td>
 <td>  </td>
 <td>  </td>
+<td>Nickname</td>
+<td>  </td>
+<td>  </td>
 <td>Number of Requests</td>
 <td>  </td>
 <td>  </td>
@@ -66,6 +108,7 @@ $i=0;
 while ($i < $num) {
 	$f1=mysql_result($result,$i,"table_num");
 	$f2=mysql_result($result,$i,"id_num");
+	$f6=mysql_result($result,$i,"nickname");
 	$f3=mysql_result($result,$i,"num_requests");
 ?>
 	<tr>
@@ -75,9 +118,14 @@ while ($i < $num) {
 	<td><?php echo $f2; ?></td>
 	<td>  </td>
 	<td>  </td>
+	<td><?php echo $f6; ?></td>
+	<td>  </td>
+	<td>  </td>
 	<td><?php echo $f3; ?></td>
 	<td>  </td>
 	<td>  </td>
+	
+
 	<!--
 	<td><form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
 	<input type="submit" name="table".<?php echo $i?> value="Close">
@@ -96,6 +144,13 @@ while ($i < $num) {
 </center>
 </body>
 </html>
+
+
+
+
+
+
+
 
 <!--Rest of password protection stuff-->
 <?php

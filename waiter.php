@@ -1,5 +1,3 @@
-<?php header('Refresh: 10'); ?>
-
 <!--password protection stuff-->
 <?php
 $username = "droidbox";
@@ -62,14 +60,12 @@ if (isset($_COOKIE['PrivatePageLogin'])) {
 	<script src="raphael.js"></script>
 	<script src="processing.js"></script>
 	</head>
-	<center>
+<center>
 
 	<p class = "ttle">
 	<font color="white">Waiter Page</font>
 	</p>
 
-
-<!--Trying this-->
 <body>
 <?php
 $username="root";
@@ -85,15 +81,10 @@ $num=mysql_numrows($result);
 
 mysql_close();
 ?>
-
-<?php
-$f9 = $_POST["table"];
-?>
-
 <td><form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-  <input type="submit" name="submit" value="Edit Tables"></td><br />
-  <label><input type="text" name="open_table" maxlength="5" id="user" /> Open Table</label><br />
-  <label><input type="text" name="close_table" maxlength="5" id="user" /> Close Table</label><br />
+<input type="submit" name="submit" value="Edit Tables"> </td> <br />
+<label><input type="text" name="open_table" maxlength="5" id="user" /> Open Table</label><br />
+<label><input type="text" name="close_table" maxlength="5" id="user" /> Close Table</label><br />
 </form>
 
 <?php if(isset($_POST['submit'])) 
@@ -112,7 +103,8 @@ mysql_connect("localhost");
 	mysql_query($cmd);
 	mysql_close();	
 }
-?></td>
+?>
+
 <table border="0" cellspacing="2" cellpadding="2">
 <tr>
 <td>Table Number</td>
@@ -121,12 +113,12 @@ mysql_connect("localhost");
 <td>Table ID</td>
 <td>  </td>
 <td>  </td>
+<td>Nickname</td>
+<td>  </td>
+<td>  </td>
 <td>Number of Requests</td>
 <td>  </td>
 <td>  </td>
-<!--
-<td>Actions</td>
--->
 </tr>
 
 <?php
@@ -134,7 +126,8 @@ $i=0;
 while ($i < $num) {
 	$f1=mysql_result($result,$i,"table_num");
 	$f2=mysql_result($result,$i,"id_num");
-	$f3=mysql_result($result,$i,"num_requests");
+	$f3=mysql_result($result,$i,"nickname");
+	$f4=mysql_result($result,$i,"num_requests");
 ?>
 	<tr>
 	<td><?php echo $f1; ?></td>
@@ -146,14 +139,11 @@ while ($i < $num) {
 	<td><?php echo $f3; ?></td>
 	<td>  </td>
 	<td>  </td>
-<!--
-	<td><form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-	<input type="submit" name="submit" value="Close">
-	</form>
--->
+	<td><?php echo $f4; ?></td>
+	<td>  </td>
+	<td>  </td>
 	</td>
 	</tr>
-
 	<?php
 	$i++;
 }
@@ -194,4 +184,5 @@ if (isset($_GET['p']) && $_GET['p'] == "login") {
 </form>
 
 <!--end pw protection stuff-->
+
 
