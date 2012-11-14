@@ -67,20 +67,7 @@ if (isset($_COOKIE['PrivatePageLogin'])) {
 	</p>
 
 <body>
-<?php
-$username="root";
-$password="droidbox";
-$database="droidbox";
 
-mysql_connect("localhost");
-mysql_select_db($database) or die( "Unable to select database");
-$query="SELECT * FROM payment";
-$result=mysql_query($query);
-
-$num=mysql_numrows($result);
-
-mysql_close();
-?>
 <td><form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
 <input type="submit" name="submit" value="Edit Tables"> </td> <br />
 <label><input type="text" name="open_table" maxlength="5" id="user" /> Open Table</label><br />
@@ -103,6 +90,21 @@ mysql_connect("localhost");
 	mysql_query($cmd);
 	mysql_close();	
 }
+?>
+
+<?php
+$username="root";
+$password="droidbox";
+$database="droidbox";
+
+mysql_connect("localhost");
+mysql_select_db($database) or die( "Unable to select database");
+$query="SELECT * FROM payment";
+$result=mysql_query($query);
+
+$num=mysql_numrows($result);
+
+mysql_close();
 ?>
 
 <table border="0" cellspacing="2" cellpadding="2">
@@ -147,7 +149,10 @@ while ($i < $num) {
 	<?php
 	$i++;
 }
-	?>
+?>
+
+	
+	
 </center>
 </body>
 </html>
