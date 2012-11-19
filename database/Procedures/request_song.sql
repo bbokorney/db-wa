@@ -40,7 +40,7 @@ proc:BEGIN
 				UPDATE queue SET request_type = 0, priority = 0, time_requested = NOW() WHERE songID = song_id;
 			END IF;
 		ELSE -- this song is not in queue, insert song into queue
-			INSERT INTO queue VALUES (song_id, 1, t_code, 0, NOW());
+			INSERT INTO queue VALUES (song_id, 1, t_num, 0, NOW());
 		END IF;		
 		-- increase the number of requests this table has made
 		UPDATE payment SET num_requests = num_requests+1 WHERE table_num = t_num;
