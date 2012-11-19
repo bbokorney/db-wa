@@ -1,6 +1,6 @@
 delimiter $$
 
-CREATE DEFINER=``@`` PROCEDURE `request_song`(
+CREATE PROCEDURE `request_song`(
 	IN song_id int(11),
 	IN t_num int(11),
 	IN t_code int(11),

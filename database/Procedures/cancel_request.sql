@@ -1,6 +1,6 @@
 delimiter $$
 
-CREATE DEFINER=``@`` PROCEDURE `cancel_request`(
+CREATE PROCEDURE `cancel_request`(
 	IN song_id int(11),
 	IN t_code int(11),
 	IN req_type tinyint(1),

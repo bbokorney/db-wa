@@ -1,6 +1,6 @@
 delimiter $$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_next_song_queue`(
+CREATE PROCEDURE `get_next_song_queue`(
 	IN prev_song_id int(11)
 )
 BEGIN

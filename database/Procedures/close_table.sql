@@ -1,6 +1,6 @@
 delimiter $$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `close_table`(
+CREATE PROCEDURE `close_table`(
 	IN table_number int(11),
 	OUT success int,
 	OUT message varchar(255),
