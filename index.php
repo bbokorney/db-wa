@@ -26,16 +26,16 @@ $songLength = -1;
 if(isset($_SESSION["curr_song_id"])) {
 	$curr_song_id = $_SESSION["curr_song_id"];
 }
-else {
-	$songLength = 3;
-}
+// else {
+	// $songLength = 3;
+// }
 
 //execute stored proc call, check that it returned a result
 $cmd = "CALL get_next_song_queue(".$curr_song_id.");";
 $cmd .= "SELECT id,title,artist,file_path,length FROM song,queue 
-		WHERE id = songID ORDER BY request_type, priority DESC, time_requested LIMIT 1;";
+		WHERE id = songID and priority >= 0 ORDER BY request_type, priority DESC, time_requested LIMIT 1;";
 $cmd .= "SELECT id,title,artist,file_path,length FROM song,queue 
-		WHERE id = songID ORDER BY request_type, priority DESC, time_requested LIMIT 4 OFFSET 1;";
+		WHERE id = songID and priority >= 0 ORDER BY request_type, priority DESC, time_requested LIMIT 4 OFFSET 1;";
 $curr_song_id = -1;
 if($sql->multi_query($cmd)) {
 	if(!$sql->next_result()) {
