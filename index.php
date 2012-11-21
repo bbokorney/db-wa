@@ -26,9 +26,9 @@ $songLength = -1;
 if(isset($_SESSION["curr_song_id"])) {
 	$curr_song_id = $_SESSION["curr_song_id"];
 }
-// else {
-	// $songLength = 3;
-// }
+else {
+	$songLength = 3;
+}
 
 //execute stored proc call, check that it returned a result
 $cmd = "CALL get_next_song_queue(".$curr_song_id.");";
