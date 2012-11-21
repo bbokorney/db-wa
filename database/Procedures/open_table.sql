@@ -1,6 +1,6 @@
 delimiter $$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `open_table`(
+CREATE PROCEDURE `open_table`(
 	IN table_number int(11),
 	OUT success int,
 	OUT message varchar(255),

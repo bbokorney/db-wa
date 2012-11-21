@@ -1,6 +1,6 @@
 delimiter $$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `check_credentials`(
+CREATE PROCEDURE `check_credentials`(
 	IN t_num int,
 	IN t_code int,
 	OUT success int,

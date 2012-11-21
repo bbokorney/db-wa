@@ -15,15 +15,14 @@ INSERT INTO song VALUES (0, "title6", "artist6", "album6", "rock", 0, 0, "filepa
 -- add the first 6 songs from the libray to queue
 -- works assuming you have songs with ids 1-6 in the library
 -- songs 1-3 are paid requests
-INSERT INTO queue VALUES (1, 0, 0, now());
-INSERT INTO queue VALUES (2, 0, 0, now());
-INSERT INTO queue VALUES (3, 0, 0, now());
+INSERT INTO queue VALUES (1, 0, 0, 0, now());
+INSERT INTO queue VALUES (2, 0, 0, 0, now()+1);
+INSERT INTO queue VALUES (3, 0, 0, 0, now()+2);
 
 -- songs 4-6 are unpaid songs which can be voted on
-INSERT INTO queue VALUES (4, 0, 1, now());
-INSERT INTO queue VALUES (5, 0, 1, now());
-INSERT INTO queue VALUES (6, 0, 1, now());
-
+INSERT INTO queue VALUES (4, 0, 0, 1, now()+3);
+INSERT INTO queue VALUES (5, 0, 0, 1, now()+4);
+INSERT INTO queue VALUES (6, 0, 0, 1, now()+5);
 
 
 -- use this to open a table

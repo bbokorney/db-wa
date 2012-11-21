@@ -1,6 +1,6 @@
 delimiter $$
 
-CREATE DEFINER=``@`` PROCEDURE `topQueue`(IN topRows INT)
+CREATE PROCEDURE `topQueue`(IN topRows INT)
 BEGIN
 	select *
 	from song,queue 

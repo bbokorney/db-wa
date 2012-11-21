@@ -13,7 +13,7 @@ BEGIN
 	IF((SELECT request_type FROM queue WHERE songID = prev_song_id) = 0) THEN
 		UPDATE queue SET priority = cooldown - 1, request_type = 2 WHERE songID = prev_song_id;
 	ELSE
-		UPDATE queue SET priority = cooldown - 1 WHERE songID = prev_song_id;
+		UPDATE queue SET priority = cooldown - 1, time_requested = NOW() WHERE songID = prev_song_id;
 	END IF;
 	-- increment the priorities of the songs with negative priorities
 	UPDATE queue SET priority = priority+1 WHERE priority < 0;

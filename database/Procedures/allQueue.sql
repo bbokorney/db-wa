@@ -1,6 +1,6 @@
 delimiter $$
 
-CREATE DEFINER=``@`` PROCEDURE `allQueue`()
+CREATE PROCEDURE `allQueue`()
 BEGIN
 	SELECT *
 	FROM song s, queue q

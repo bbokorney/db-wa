@@ -1,6 +1,6 @@
 delimiter $$
 
-CREATE DEFINER=``@`` PROCEDURE `play_playlist`(
+CREATE PROCEDURE `play_playlist`(
 IN playlist_ID int(11),
 	OUT success tinyint(1),
 	OUT message nvarchar(255)
