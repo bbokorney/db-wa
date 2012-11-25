@@ -9,69 +9,12 @@ if (isset($_COOKIE['PrivatePageLogin'])) {
 ?>
 <!-- pw stuff-->
 
-<!-- Genereates sql queries -->
-<?php
-session_start();
-$sql = new mysqli("localhost");
-if(!$sql->select_db("droidbox")) {	
-	die("Unable to connect to database.");
-}
-$curr_song_id = -1;
-$title = null;
-$artist = null;
-$filepath = null;
-$songLength = -1;
-
-//check if this is the first time the jukebox has been started
-if(isset($_SESSION["curr_song_id"])) {
-	$curr_song_id = $_SESSION["curr_song_id"];
-}
-else {
-	$songLength = 3;
-}
-
-//execute stored proc call, check that it returned a result
-$cmd = "CALL get_next_song_queue(".$curr_song_id.");";
-$cmd .= "SELECT id,title,artist,file_path,length FROM song,queue 
-		WHERE id = songID and priority >= 0 ORDER BY request_type, priority DESC, time_requested LIMIT 1;";
-$cmd .= "SELECT id,title,artist,file_path,length FROM song,queue 
-		WHERE id = songID and priority >= 0 ORDER BY request_type, priority DESC, time_requested LIMIT 4 OFFSET 1;";
-$curr_song_id = -1;
-if($sql->multi_query($cmd)) {
-	if(!$sql->next_result()) {
-		die("No next result.");		
-	}
-	if(!$result = $sql->store_result()) {
-		die("No result to store");
-	}
-	if(!$row = $result->fetch_row()) {
-		//die("No rows in result.");
-		$curr_song_id = -1;
-	}
-	else {
-		$_SESSION["curr_song_id"] = $row[0];
-		$curr_song_id = $row[0];
-		$title = $row[1];
-		$artist = $row[2];
-		$filepath = $row[3];
-		$songLength = $row[4];
-		$result->free();	
-	}
-}
-else {
-	die("Error: ".$sql->error."<br>");
-}
-?>
-
 <html>
+<script type="text/javascript" src="jquery.js"></script>
 <head>
-
-<title>mockupDBpage</title>
+<title>Droidbox</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-<META HTTP-EQUIV="REFRESH" content="<?php echo($songLength); ?>;URL=http://localhost/db-wa/">
-
-<script src="nowPlaying.js" type="text/javascript"></script>
 <style type='text/css'>
 body {
 	background-image: url('images/bg.png');
@@ -84,26 +27,12 @@ body {
 
 <!-- audio player -->
 
-<audio controls="controls">
-  	<source src="track.ogg" type="audio/ogg" />
-  	<source src="track.mp3" type="audio/mpeg" />
-	
-	Your browser does not support the audio element.
-	<script language="javascript">
-	var myaudio = new Audio('<?php echo($filepath); ?>');
-	myaudio.play();
-	
-	//myaudio.addEventListener("onended",timedRefresh);
-	</script>
-	
-	
-</audio>
+<audio id="audio" controls="controls"></audio>
 
 <!-- end audio player section -->
 
 <div id="content">
 <body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-	
 <!-- Save for Web Slices (mockupDBpage.psd) -->
 <table id="Table_01" width="1280" height="720" border="0" cellpadding="0" cellspacing="0">
 	<tr>
@@ -113,61 +42,89 @@ body {
 	<tr>
 		<td>
 			<!-- Now Playing -->			
-			<font face="Arial, Helvetica, sans-serif" color="white" size="5">Now Playing:</font>
-			<?php				
-			if($curr_song_id == -1) {
-				$descrip =  "<br /> No song is currently playing.";
-			}
-			else {				
-				$descrip = "<br />".$title." - ".$artist;
-			}
-			?>
-			<font face="Arial, Helvetica, sans-serif" color="white" size="10"><?php echo $descrip; ?> </font>
-
+			<font face="Arial, Helvetica, sans-serif" color="white" size="5">Now Playing:</font>			
+			<font id="nowPlaying" face="Arial, Helvetica, sans-serif" color="white" size="10"></font>
 			<!-- end Now Playing -->
 		</td>
 		<td rowspan="2">
 			<img src="images/mockupDBpage_03.png" width="643" height="462" alt=""></td>
 	</tr>
 	<tr>
-		<td>
-			<!-- Queue -->			
-			<font face="Arial, Helvetica, sans-serif" color="white" size="5">Coming Up:</font><br />
-
-			<?php
-			$count=0;
-			$minQueue=2;									
-			if(!$sql->next_result()) {
-				die("No next result.");		
-			}
-			if(!$result = $sql->store_result()) {
-				die("No result to store");
-			}
-			while($row = $result->fetch_row()) {
-				$title = $row[1];
-				$artist = $row[2];					
-			?>
-			<font face="Arial, Helvetica, sans-serif" color="white" size="6"><?php echo $count+1; echo ") ".$title." - ".$artist."<br />"; ?> </font>
-			<?php
-			++$count;
-			}
-			?>
-			<!-- end Queue -->
+		<!-- Queue -->
+		<td id="queueList">
+			<font face="Arial, Helvetica, sans-serif" color="white" size="5">Coming Up:</font><br />		
 			
-
-			<!-- Low Queue message -->
-			<?php
-			if ($count<$minQueue){
-			echo "<font face=\"Arial, Helvetica, sans-serif\" color=\"white\" size=\"6\">!!!Low Queue--Send Requests!!! <br /> </font>";
-			}
-					
-			?>	
-
 		 </td>
+		 <!-- end Queue -->
 	</tr>
 </table>
 <!-- End Save for Web Slices -->
 
+<script>
+	function getNextSong(auido) {		
+		$.post(
+			"getNextSongQueue.php",
+			{ "songID" : songID },
+			function(data) {
+				var response = JSON.parse(data);			
+				if(response.success != 0) {
+					console.log(response.message);					
+				}			
+				songID = response.songID;
+				filepath = response.filepath;
+				showNowPlaying(response, nowPlaying);
+				playSong(filepath, audio);
+				showQueue(queueList);
+			}
+		);
+	}
+
+	function playSong(filepath, audio) {
+		if(audio == null) {
+			console.log("Audio is null");
+			return;
+		}		
+		audio.src = filepath;
+		audio.play();		
+	}
+	
+	function showNowPlaying(response, nowPlaying) {
+		if(response.success == 0) {
+			nowPlaying.innerHTML = "</br>" + response.title + " - " + response.artist;
+		}
+		else {
+			nowPlaying.innerHTML = "No song currently playing.";
+		}
+	}
+	
+	function showQueue(queueList) {
+		console.log("showQueue() called");
+		$.post(
+			"getQueue.php",
+			function(data) {
+				queueList.innerHTML = "";
+				var response = JSON.parse(data);
+				if(response.success != 0 || response.songs.length <= 1) {
+					response.innerHTML = "No songs currently in the queue.";
+					return;
+				}
+				queueList.innerHTML += "<font face=\"Arial, Helvetica, sans-serif\" color=\"white\" size=\"5\">Coming Up:</font><br />";
+				for(var i = 1; i < response.songs.length && i < 4; ++i) {
+					queueList.innerHTML += "<font face=\"Arial, Helvetica, sans-serif\" color=\"white\" size=\"6\">"
+											+ i + ") " + response.songs[i].title + " - " + response.songs[i].artist + "</font><br />";					
+				}
+			}
+		);
+	}
+	var filepath = "";
+	var songID = -1;
+	var audio = document.getElementById("audio");
+	var nowPlaying = document.getElementById("nowPlaying");
+	var queueList = document.getElementById("queueList");
+	audio.addEventListener("ended", getNextSong);
+	setInterval("showQueue(queueList)", 3000);
+	getNextSong(audio);
+</script>
 </body>
 </div>
 </html>
