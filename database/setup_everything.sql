@@ -57,7 +57,7 @@ CREATE TABLE constants (
 
 -- Procedures -----------------------------------------------------------------
 
-DROP PROCEDURE IF EXISTS Check_credentials;
+DROP PROCEDURE IF EXISTS check_credentials;
 delimiter $$
 CREATE PROCEDURE `check_credentials`(
 	IN t_num int,
@@ -65,7 +65,7 @@ CREATE PROCEDURE `check_credentials`(
 	OUT success int,
 	OUT message varchar(255)
 )
-BEGIN
+BEGIN	
 	DECLARE rc int;
 	SET rc = (SELECT COUNT(*) FROM payment WHERE (table_num = t_num AND id_num = t_code));
 	
@@ -176,6 +176,38 @@ proc:BEGIN
 			"anon",
 			0
 		);
+END$$
+
+DROP PROCEDURE IF EXISTS change_nickname;
+$$
+CREATE PROCEDURE change_nickname (
+		IN t_num int,
+		IN t_code int,
+		IN n_name varchar(255),
+		OUT success int,
+		OUT message varchar(255))
+proc: BEGIN
+	-- check if this table is already open
+	DECLARE rc int(11);
+	SET rc = (SELECT COUNT(*) FROM payment WHERE payment.table_num = t_num);
+	IF(rc <= 0) THEN
+		-- this table is not open
+		SET success = 1;
+		SET message = "This table is not open.";
+		LEAVE proc;
+	END IF;
+	SET rc = (SELECT COUNT(*) FROM payment WHERE payment.table_num = t_num AND payment.id_num = t_code);
+	IF(rc <= 0) THEN
+		-- table exists, but not the right password
+		SET success = 1;
+		SET message = "This is not the right code for this table";
+		LEAVE proc;
+	END IF;
+	-- update nickname
+	SET success = 0;
+	SET message = "Success!";
+	UPDATE payment SET payment.nickname = n_name WHERE payment.table_num = t_num AND payment.id_num = t_code;
+
 END$$
 
 DROP PROCEDURE IF EXISTS play_playlist
