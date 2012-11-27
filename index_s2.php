@@ -26,9 +26,9 @@ $songLength = -1;
 if(isset($_SESSION["curr_song_id"])) {
 	$curr_song_id = $_SESSION["curr_song_id"];
 }
-// else {
-	// $songLength = 3;
-// }
+else {
+	$songLength = 3;
+}
 
 //execute stored proc call, check that it returned a result
 $cmd = "CALL get_next_song_queue(".$curr_song_id.");";
@@ -106,70 +106,65 @@ body {
 	
 <!-- Save for Web Slices (mockupDBpage.psd) -->
 <table id="Table_01" width="1280" height="720" border="0" cellpadding="0" cellspacing="0">
-<tr>
-<td colspan="2">
-<img src="images/mockupDBpage_01.png" width="1280" height="258" alt="">
-</td>
-</tr>
-<tr>
-<td>
-<!-- Now Playing -->			
-<font face="Arial, Helvetica, sans-serif" color="white" size="5">Now Playing:</font>
-<?php				
-if($curr_song_id == -1) 
-{
-	$descrip =  "<br /> No song is currently playing.";
-}
-else 
-{				
-	$descrip = "<br />".$title." - ".$artist;
-}
-?>
-<font face="Arial, Helvetica, sans-serif" color="white" size="10"><?php echo $descrip; ?> </font>
+	<tr>
+		<td colspan="2">
+			<img src="images/mockupDBpage_01.png" width="1280" height="258" alt=""></td>
+	</tr>
+	<tr>
+		<td>
+			<!-- Now Playing -->			
+			<font face="Arial, Helvetica, sans-serif" color="white" size="5">Now Playing:</font>
+			<?php				
+			if($curr_song_id == -1) {
+				$descrip =  "<br /> No song is currently playing.";
+			}
+			else {				
+				$descrip = "<br />".$title." - ".$artist;
+			}
+			?>
+			<font face="Arial, Helvetica, sans-serif" color="white" size="10"><?php echo $descrip; ?> </font>
 
-<!-- end Now Playing -->
-</td>
-<td rowspan="2">
-<img src="images/mockupDBpage_03.png" width="643" height="462" alt="">
-</td>
-</tr>
-<tr>
-<td>
-<!-- Queue -->			
-<font face="Arial, Helvetica, sans-serif" color="white" size="5">Coming Up:</font><br />
-<?php
-$count=0;
-$minQueue=2;									
-if(!$sql->next_result()) 
-{
-	die("No next result.");		
-}
-if(!$result = $sql->store_result())
-{
-	die("No result to store");
-}
-while($row = $result->fetch_row()) 
-{
-	$title = $row[1];
-	$artist = $row[2];					
-?>
-<font face="Arial, Helvetica, sans-serif" color="white" size="6"><?php echo $count+1; echo ") ".$title." - ".$artist."<br />"; ?> </font>
-<?php
-++$count;
-}
-?>
-<!-- end Queue -->
+			<!-- end Now Playing -->
+		</td>
+		<td rowspan="2">
+			<img src="images/mockupDBpage_03.png" width="643" height="462" alt=""></td>
+	</tr>
+	<tr>
+		<td>
+			<!-- Queue -->			
+			<font face="Arial, Helvetica, sans-serif" color="white" size="5">Coming Up:</font><br />
+
+			<?php
+			$count=0;
+			$minQueue=2;									
+			if(!$sql->next_result()) {
+				die("No next result.");		
+			}
+			if(!$result = $sql->store_result()) {
+				die("No result to store");
+			}
+			while($row = $result->fetch_row()) {
+				$title = $row[1];
+				$artist = $row[2];					
+			?>
+			<font face="Arial, Helvetica, sans-serif" color="white" size="6"><?php echo $count+1; echo ") ".$title." - ".$artist."<br />"; ?> </font>
+			<?php
+			++$count;
+			}
+			?>
+			<!-- end Queue -->
 			
 
-<!-- Low Queue message -->
-<?php
-if ($count<$minQueue){
-echo "<font face=\"Arial, Helvetica, sans-serif\" color=\"white\" size=\"6\">!!!Low Queue--Send Requests!!! <br /> </font>";
-}			
-?>	
+			<!-- Low Queue message -->
+			<?php
+			if ($count<$minQueue){
+			echo "<font face=\"Arial, Helvetica, sans-serif\" color=\"white\" size=\"6\">!!!Low Queue--Send Requests!!! <br /> </font>";
+			}
+					
+			?>	
 
-</td>
-</tr>
+		 </td>
+	</tr>
 </table>
 <!-- End Save for Web Slices -->
 

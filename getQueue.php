@@ -2,7 +2,8 @@
 $database = "droidbox";
 mysql_connect("localhost");
 @mysql_select_db($database) or die( "Unable to select database");
-$query = "SELECT id, title, artist, album FROM song,queue WHERE id = songID ORDER BY request_type,priority DESC,time_requested";
+//$query = "SELECT id, title, artist, album FROM song,queue WHERE id = songID ORDER BY request_type,priority DESC,time_requested";
+$query = "SELECT id,title,artist,album FROM song,queue WHERE id = songID and priority >= 0 ORDER BY request_type, priority DESC, time_requested;";
 $result = mysql_query($query);
 $song = array();
 if(mysql_num_rows($result) > 0) {
