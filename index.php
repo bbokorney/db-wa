@@ -138,7 +138,8 @@ body {
 				var response = JSON.parse(data);
 				queueList.innerHTML += "<span class=\"ttle\"><font color=\"white\" size=\"5\">Coming Up:</font></span><br />";
 				if(response.success != 0 || response.songs.length <= 1) {					
-					queueList.innerHTML += "No songs currently in the queue.";
+					queueList.innerHTML += "<span class=\"bddy\"><font color=\"#CC00CC\" size=\"6\">"+
+											"Queue is low! Request songs!"+"</font></span><br />";
 					return;
 				}				
 				for(var i = 1; i < response.songs.length && i < 4; ++i) {
