@@ -93,9 +93,10 @@ body {
 			"getNextSongQueue.php",
 			{ "songID" : songID },
 			function(data) {
-				var response = JSON.parse(data);			
-				if(response.success != 0) {
-					console.log(response.message);					
+				var response = JSON.parse(data);				
+				if(response.success != 0) {					
+					showNowPlaying(response, nowPlaying);
+					return;
 				}			
 				songID = response.songID;
 				filepath = response.filepath;
@@ -108,34 +109,38 @@ body {
 
 	function playSong(filepath, audio) {
 		if(audio == null) {
-			console.log("Audio is null");
+			console.log("Audio is null");			
 			return;
 		}		
 		audio.src = filepath;
 		audio.play();		
 	}
 	
-	function showNowPlaying(response, nowPlaying) {
+	function showNowPlaying(response, nowPlaying) {		
 		if(response.success == 0) {
-			nowPlaying.innerHTML = "</br>" + response.title + " - " + response.artist;
+			nowPlaying.innerHTML = "</br>" + response.title + " - " + response.artist;			
 		}
 		else {
-			nowPlaying.innerHTML = "No song currently playing.";
+			nowPlaying.innerHTML = "</br>No song currently playing.";
+			songID = -1;			
 		}
 	}
 	
-	function showQueue(queueList) {
-		console.log("showQueue() called");
+	function showQueue(queueList) {		
 		$.post(
 			"getQueue.php",
 			function(data) {
+				if(audio.paused) {
+					console.log("Audio is paused");	
+					getNextSong(audio);
+				}
 				queueList.innerHTML = "";
 				var response = JSON.parse(data);
-				if(response.success != 0 || response.songs.length <= 1) {
-					response.innerHTML = "No songs currently in the queue.";
+				queueList.innerHTML += "<span class=\"ttle\"><font color=\"white\" size=\"5\">Coming Up:</font></span><br />";
+				if(response.success != 0 || response.songs.length <= 1) {					
+					queueList.innerHTML += "No songs currently in the queue.";
 					return;
-				}
-				queueList.innerHTML += "<span class=\"bddy\"><font color=\"white\" size=\"5\">Coming Up:</font></span><br />";
+				}				
 				for(var i = 1; i < response.songs.length && i < 4; ++i) {
 					queueList.innerHTML += "<span class=\"bddy\"><font color=\"white\" size=\"6\">"
 											+ i + ") " + response.songs[i].title + " - " + response.songs[i].artist + "</font></span><br />";					
@@ -148,7 +153,9 @@ body {
 	var audio = document.getElementById("audio");
 	var nowPlaying = document.getElementById("nowPlaying");
 	var queueList = document.getElementById("queueList");
+	var audioPlaying = false;
 	audio.addEventListener("ended", getNextSong);
+	getNextSong(audio);
 	setInterval("showQueue(queueList)", 3000);
 	getNextSong(audio);
 </script>
