@@ -20,6 +20,33 @@ body {
 	background-image: url('images/bg.png');
 	background-repeat:repeat;
 } 
+
+.ttle{
+		font-family: Capture_it;
+		color: FFFFFF;
+		font-size: 39px;
+		font-weight:lighter;
+		text-shadow: 3px 3px 3px #000;
+	}
+	
+.bddy{
+		font-family: BankGothic Md BT Medium;
+		color: FFFFFF;
+		font-size: 16px;
+		text-shadow: 3px 3px 3px #000;
+	}
+
+	
+@font-face {  
+ 		font-family:  Capture_it ;  
+  		src: local(Capture_it), url( fonts/Capture_it.ttf ) format("truetype"); /* non-IE */  
+	}
+@font-face{
+		font-family:  BankGothic Md BT Medium ;  
+  		src: local(BankGothic Md BT), url( "fonts/BankGothic Md BT.ttf" ) format("opentype"); /* non-IE */  
+	}   
+
+
 #content {position:absolute; top:0; bottom:0; left:0; right:0;
 			margin:auto; height:75%; width:90%;}
 </style>
@@ -42,8 +69,8 @@ body {
 	<tr>
 		<td>
 			<!-- Now Playing -->			
-			<font face="Arial, Helvetica, sans-serif" color="white" size="5">Now Playing:</font>			
-			<font id="nowPlaying" face="Arial, Helvetica, sans-serif" color="white" size="10"></font>
+			<span class="ttle"><font color="white" size="5">Now Playing:</font></span>			
+			<span class="bddy"><font id="nowPlaying" color="white" size="10"></font></span>
 			<!-- end Now Playing -->
 		</td>
 		<td rowspan="2">
@@ -52,7 +79,7 @@ body {
 	<tr>
 		<!-- Queue -->
 		<td id="queueList">
-			<font face="Arial, Helvetica, sans-serif" color="white" size="5">Coming Up:</font><br />		
+			<span class="ttle"><font color="white" size="5">Coming Up:</font></span><br />		
 			
 		 </td>
 		 <!-- end Queue -->
@@ -108,10 +135,10 @@ body {
 					response.innerHTML = "No songs currently in the queue.";
 					return;
 				}
-				queueList.innerHTML += "<font face=\"Arial, Helvetica, sans-serif\" color=\"white\" size=\"5\">Coming Up:</font><br />";
+				queueList.innerHTML += "<span class=\"bddy\"><font color=\"white\" size=\"5\">Coming Up:</font></span><br />";
 				for(var i = 1; i < response.songs.length && i < 4; ++i) {
-					queueList.innerHTML += "<font face=\"Arial, Helvetica, sans-serif\" color=\"white\" size=\"6\">"
-											+ i + ") " + response.songs[i].title + " - " + response.songs[i].artist + "</font><br />";					
+					queueList.innerHTML += "<span class=\"bddy\"><font color=\"white\" size=\"6\">"
+											+ i + ") " + response.songs[i].title + " - " + response.songs[i].artist + "</font></span><br />";					
 				}
 			}
 		);

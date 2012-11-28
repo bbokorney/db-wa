@@ -22,36 +22,31 @@ if (isset($_COOKIE['PrivatePageLogin'])) {
 		background-image: url('images/bg.png');
 		background-repeat:repeat;
 		text-shadow: 3px 3px 3px #000;
-		font-family: "Bank Gothic";
+		font-family: "BankGothic Md BT Medium";
 		color: FFFFFF;
 		font-size: 12px;
 	}
 	p.ttle{
-		font-family: "Capture it";
+		font-family: Capture_it;
 		color: FFFFFF;
 		font-size: 39px;
 		font-weight:lighter;
 	}
 
-	@font-face {  
-		font-family:  Bank Gothic ;  
-  		src: local(fonts/bankGothic.ttf), url( /fonts/bankGothic.ttf ) format("truetype"); /* non-IE */  
-	}  
-
-	.element    { 	
-		font-family: "Bank Gothic"; color: FFFFFF;	font-size: 30px;
-		font-weight:lighter; position:absolute; 
+	p.bddy{
+		font-family: BankGothic Md BT Medium;
+		color: FFFFFF;
+		font-size: 16px;
 	}
-	#element-1    { color:lightblue; z-index:1; }
-	#element-2    { color:lightgreen; margin:10px 0 0 45px; z-index:2; }
 
-	.table {	display:table;}
-	.tr {    	display:table-row;}
-	.td {    	display:table-cell;}
-
+	
 	@font-face {  
- 		font-family:  Capture it ;  
-  		src: local(fonts/Capture it.ttf), url( /fonts/Capture it.ttf ) format("truetype"); /* non-IE */  
+ 		font-family:  Capture_it ;  
+  		src: local(Capture_it), url( fonts/Capture_it.ttf ) format("truetype"); /* non-IE */  
+	}
+	@font-face{
+		font-family:  BankGothic Md BT Medium ;  
+  		src: local(BankGothic Md BT), url( "fonts/BankGothic Md BT.ttf" ) format("opentype"); /* non-IE */  
 	}  
 
 	#content {
@@ -93,6 +88,7 @@ mysql_connect("localhost");
 	mysql_close();	
 }
 ?>
+
 
 <?php
 $username="root";

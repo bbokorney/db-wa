@@ -8,6 +8,52 @@ if (isset($_COOKIE['PrivatePageLogin'])) {
    if ($_COOKIE['PrivatePageLogin'] == md5($password.$nonsense)) {
 ?>
 <!-- pw stuff-->
+	<title>adminPage</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+	<style type='text/css'>
+	body {
+		background-image: url('images/bg.png');
+		background-repeat:repeat;
+		text-shadow: 3px 3px 3px #000;
+		color: FFFFFF;
+		font-size: 12px;
+	}
+	.ttle{
+		font-family: Capture_it;
+		color: FFFFFF;
+		font-size: 39px;
+		font-weight:lighter;
+	}
+	
+	.bddy{
+		font-family: BankGothic Md BT Medium;
+		color: FFFFFF;
+		font-size: 16px;
+	}
+
+	
+	@font-face {  
+ 		font-family:  Capture_it ;  
+  		src: local(Capture_it), url( fonts/Capture_it.ttf ) format("truetype"); /* non-IE */  
+	}
+	@font-face{
+		font-family:  BankGothic Md BT Medium ;  
+  		src: local(BankGothic Md BT), url( "fonts/BankGothic Md BT.ttf" ) format("opentype"); /* non-IE */  
+	}  
+
+	#content {
+		position:absolute; top:0; bottom:0; left:0; right:0;
+		margin:auto; height:75%; width:90%;
+	}
+	</style>
+	</head>
+<center>
+
+	<span class = "ttle">
+	<font color="white">Admin Page</font>
+	</span>
+
 
 <html>
 <body>
@@ -100,15 +146,16 @@ mysql_close();
 
 <table border="0" cellspacing="2" cellpadding="2">
 <tr>
-<td><font face="Arial, Helvetica, sans-serif">DELETE?</font></td>
-<td><font face="Arial, Helvetica, sans-serif">Enabled/<br />Disabled</font></td>
-<td><font face="Arial, Helvetica, sans-serif">ID</font></td>
-<td><font face="Arial, Helvetica, sans-serif">Title</font></td>
-<td><font face="Arial, Helvetica, sans-serif">Artist</font></td>
-<td><font face="Arial, Helvetica, sans-serif">Album</font></td>
-<td><font face="Arial, Helvetica, sans-serif">Genre</font></td>
-<td><font face="Arial, Helvetica, sans-serif">Length</font></td>
-<td><font face="Arial, Helvetica, sans-serif">Play Count</font></td>
+<td><span class ="bddy">DELETE?</span></td>
+<td><span class ="bddy">Enabled/<br />Disabled</span></td>
+<td><span class ="bddy">ID</span></td>
+<td><span class ="bddy">Title</span></td>
+<td><span class ="bddy">Artist</span></td>
+<td><span class ="bddy">Album</span></td>
+<td><span class ="bddy">Genre</span></td>
+<td><span class ="bddy">Length</span><td>
+<td><span class ="bddy">Play Count</span></td>
+
 </tr>
 
 <?php
@@ -129,7 +176,7 @@ $f8=mysql_result($result,$i,"num_played");
 <td><input type="checkbox" name="songDelete[<?php echo $i; ?>]" value="1"></td>
 <td><input type="checkbox" name="songEnabled[<?php echo $i; ?>]" value="1" <?php if($f1 == "1") {echo "checked";} ?>></td>
 <td><input type="hidden" name="songID[<?php echo $i; ?>]" maxlength="80" value="<?php echo $f2;?>" size=5 />
-<font face="Arial, Helvetica, sans-serif"><?php echo $f2; ?></font></td>
+<span class = "bddy"><?php echo $f2; ?></span></td>
 <td><input type="text" name="songTitle[<?php echo $i; ?>]" maxlength="80" value="<?php echo $f3;?>" size=30 /></td>
 <td><input type="text" name="songArtist[<?php echo $i; ?>]" maxlength="50" value="<?php echo $f4;?>" /></td>
 <td><input type="text" name="songAlbum[<?php echo $i; ?>]" maxlength="50" value="<?php echo $f5;?>" /></td>
@@ -147,9 +194,9 @@ $f8=mysql_result($result,$i,"num_played");
 </select></td>
 
 <td><input type="hidden" name="songLength[<?php echo $i; ?>]" maxlength="50" value="<?php echo $f7;?>" size=5 />
-<font face="Arial, Helvetica, sans-serif"><?php echo $f7; ?></font></td>
+<span class="bddy" ><?php echo $f7; ?></span></td>
 <td><input type="hidden" name="songPlayCount[<?php echo $i; ?>]" maxlength="50" value="<?php echo $f8;?>" size=5 />
-<font face="Arial, Helvetica, sans-serif"><?php echo $f8; ?></font></td>
+<span class="bddy"><?php echo $f8; ?></span></td>
 </tr>
 
 <?php
