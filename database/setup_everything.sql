@@ -114,6 +114,7 @@ END$$
 
 DROP PROCEDURE IF EXISTS get_next_song_queue;
 $$
+
 CREATE PROCEDURE `get_next_song_queue`(
 	IN prev_song_id int(11)
 )
@@ -121,7 +122,7 @@ BEGIN
 	DECLARE cooldown int;
 	SET cooldown = -3;
 	-- increment the number of times played for previous song
-	UPDATE song SET num_played = num_played + 1 WHERE id = prev_song_id;
+	UPDATE song, queue SET num_played = num_played + 1, request_type = 2 WHERE id = prev_song_id;
 	-- set the cooldown period for the previous song, change request type to cooldown
 	-- if this was a paid request
 	IF((SELECT request_type FROM queue WHERE songID = prev_song_id) = 0) THEN
@@ -132,8 +133,14 @@ BEGIN
 	-- increment the priorities of the songs with negative priorities
 	UPDATE queue SET priority = priority+1 WHERE priority < 0;
 	-- remove all paid songs with a 0 priority
-	DELETE FROM queue WHERE priority = 0 AND request_type = 2;	
+	DELETE FROM queue WHERE priority = 0 AND request_type = 2;
+
+	-- set the priority of the currently playing song to -1 so it will always appear first in the queue
+	SET cooldown = (SELECT id FROM song,queue WHERE id = songID and priority >= 0 ORDER BY request_type, priority DESC, time_requested LIMIT 1);
+	UPDATE queue SET request_type = -1 WHERE songID = cooldown;
 END$$
+
+
 
 DROP PROCEDURE IF EXISTS open_table;
 $$
@@ -394,3 +401,61 @@ BEGIN
 	ORDER BY priority desc,request_type desc,time_requested 
 	LIMIT topRows OFFSET 1;
 END$$
+
+DROP PROCEDURE IF EXISTS request_song_all_free
+$$
+CREATE PROCEDURE `request_song_all_free`(
+	IN song_id int(11),
+	IN t_num int(11),
+	IN t_code int(11),
+	IN req_type tinyint(1),
+	OUT success tinyint(1),
+	OUT message nvarchar(255)
+)
+proc:BEGIN
+	DECLARE rc int;
+	SET rc = (SELECT COUNT(*) FROM payment WHERE (table_num = t_num AND id_num = t_code));
+	
+	-- check that the table and table code match
+	IF(rc != 1) THEN
+		SET success = 1;
+		-- if not, check if this table has been given a code
+		SET rc = (SELECT COUNT(*) FROM payment WHERE table_num = t_num);
+		IF(rc < 1) THEN
+			SET message = "This table does not have a code yet.";
+		ELSE
+			SET message = "Incorrect table code for this table number.";
+		END IF;		
+		LEAVE proc;
+	END IF;
+
+	-- check if adding new song or voting
+	IF(req_type = 0) THEN -- if requesting new song
+		-- check if song is already in queue
+		SET rc = (SELECT COUNT(*) FROM queue WHERE songID = song_id);
+		IF(rc > 0) THEN	-- the song is in the queue					
+			SET success = 1;
+			SET message = "The requested song is already in the queue.";
+			LEAVE proc;				
+		ELSE -- this song is not in queue, insert song into queue
+			INSERT INTO queue VALUES (song_id, 0, t_code, 1, NOW());
+		END IF;		
+		-- increase the number of requests this table has made
+		UPDATE payment SET num_requests = num_requests+1 WHERE table_num = t_num;
+	
+	ELSE -- if request is a vote
+		-- check that this song is in the queue
+		SET rc = (SELECT COUNT(*) FROM queue WHERE songID = song_id);
+		IF(rc < 1) THEN
+			SET success = 1;
+			SET message = "The requested song to vote on is not in queue.";
+			LEAVE proc;
+		END IF;
+		-- increase the priority of this song
+		UPDATE queue SET priority = priority+1 WHERE songID = song_id;
+	END IF;
+
+	SET success = 0;
+	SET message = "Success!";
+END$$
+

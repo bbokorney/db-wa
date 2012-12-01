@@ -33,7 +33,9 @@ if(!$sql->select_db("droidbox")) {
 	die(json_encode($response));
 }
 //execute stored proc call, check that it returned a result
-$cmd = "CALL request_song(".$_POST["songID"].",".$_POST["t_num"].",".$_POST["t_code"].",".$_POST["req_type"].",". 
+// $cmd = "CALL request_song(".$_POST["songID"].",".$_POST["t_num"].",".$_POST["t_code"].",".$_POST["req_type"].",". 
+						// "@success, @message); SELECT @success, @message;";
+$cmd = "CALL request_song_all_free(".$_POST["songID"].",".$_POST["t_num"].",".$_POST["t_code"].",".$_POST["req_type"].",". 
 						"@success, @message); SELECT @success, @message;";
 if($sql->multi_query($cmd)) {
 	//read results from the request
