@@ -21,9 +21,6 @@ mysql_close();
 <td>Table ID</td>
 <td>  </td>
 <td>  </td>
-<td>Nickname</td>
-<td>  </td>
-<td>  </td>
 <td>Number of Requests</td>
 <td>  </td>
 <td>  </td>
@@ -42,9 +39,6 @@ while ($i < $num) {
 	<td>  </td>
 	<td>  </td>
 	<td><?php echo $f2; ?></td>
-	<td>  </td>
-	<td>  </td>
-	<td><?php echo $f3; ?></td>
 	<td>  </td>
 	<td>  </td>
 	<td><?php echo $f4; ?></td>

@@ -8,18 +8,25 @@ if (isset($_COOKIE['PrivatePageLogin'])) {
    if ($_COOKIE['PrivatePageLogin'] == md5($password.$nonsense)) {
 ?>
 <!-- pw stuff-->
+<script type="text/javascript" src="jquery.js"></script>
 
 <head>
 	<script type='text/javascript'>
-   	$(function(){
-       	$.get('waiterTable.php',{},function(data){
-	$('#tableID').replaceWith($(data));  
-	});
-	});
+   	function waiterTableRefresh()
+	{
+       		$.get('waiterTable.php',{},
+			function(data){
+				var tableTable = document.getElementById("tableTable");
+				tableTable.innerHTML = data;
+				console.log(data);  
+			});	
+	}
+	waiterTableRefresh();
+	setInterval("waiterTableRefresh()", 3000);
 	</script>
-
 	
-    <title>waiterPage</title>
+	
+    	<title>waiterPage</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
 	<style type='text/css'>
@@ -27,36 +34,29 @@ if (isset($_COOKIE['PrivatePageLogin'])) {
 		background-image: url('images/bg.png');
 		background-repeat:repeat;
 		text-shadow: 3px 3px 3px #000;
-		font-family: "Bank Gothic";
+		font-family: "BankGothic Md BT Medium";
 		color: FFFFFF;
 		font-size: 12px;
 	}
 	p.ttle{
-		font-family: "Capture it";
+		font-family: "Capture_it";
 		color: FFFFFF;
 		font-size: 39px;
 		font-weight:lighter;
 	}
 
-	@font-face {  
-		font-family:  Bank Gothic ;  
-  		src: local(fonts/bankGothic.ttf), url( /fonts/bankGothic.ttf ) format("truetype"); /* non-IE */  
-	}  
-
-	.element    { 	
-		font-family: "Bank Gothic"; color: FFFFFF;	font-size: 30px;
-		font-weight:lighter; position:absolute; 
+	p.bddy{
+		font-family: BankGothic Md BT Medium;
+		color: FFFFFF;
+		font-size: 16px;
 	}
-	#element-1    { color:lightblue; z-index:1; }
-	#element-2    { color:lightgreen; margin:10px 0 0 45px; z-index:2; }
-
-	.table {	display:table;}
-	.tr {    	display:table-row;}
-	.td {    	display:table-cell;}
-
 	@font-face {  
- 		font-family:  Capture it ;  
-  		src: local(fonts/Capture it.ttf), url( /fonts/Capture it.ttf ) format("truetype"); /* non-IE */  
+ 		font-family:  Capture_it ;  
+  		src: local(Capture_it), url( fonts/Capture_it.ttf ) format("truetype"); /* non-IE */  
+	}
+	@font-face{
+		font-family:  BankGothic Md BT Medium ;  
+  		src: local(BankGothic Md BT), url( "fonts/BankGothic Md BT.ttf" ) format("opentype"); /* non-IE */  
 	}  
 
 	#content {
@@ -67,7 +67,7 @@ if (isset($_COOKIE['PrivatePageLogin'])) {
 	<script src="raphael.js"></script>
 	<script src="processing.js"></script>
 	</head>
-<center>
+	<center>
 
 	<p class = "ttle">
 	<font color="white">Waiter Page</font>
@@ -80,6 +80,8 @@ if (isset($_COOKIE['PrivatePageLogin'])) {
 <label><input type="text" name="open_table" maxlength="5" id="user" /> Open Table</label><br />
 <label><input type="text" name="close_table" maxlength="5" id="user" /> Close Table</label><br />
 </form>
+
+<div id="tableTable"></div>
 
 <?php if(isset($_POST['submit'])) 
 {
@@ -99,7 +101,7 @@ mysql_connect("localhost");
 }
 ?>
 
-<?php include_once('waiterTable.php')?>
+<!--<?php include_once('waiterTable.php')?>-->
 
 <!--Rest of password protection stuff-->
 <?php
@@ -133,10 +135,3 @@ if (isset($_GET['p']) && $_GET['p'] == "login") {
 </form>
 
 <!--end pw protection stuff-->
-
-
-
-
-
-
-
