@@ -93,6 +93,7 @@ body {
 			"getNextSongQueue.php",
 			{ "songID" : songID },
 			function(data) {
+				console.log(data);
 				var response = JSON.parse(data);				
 				if(response.success != 0) {					
 					showNowPlaying(response, nowPlaying);
@@ -144,7 +145,7 @@ body {
 				}				
 				for(var i = 1; i < response.songs.length && i < 4; ++i) {
 					queueList.innerHTML += "<span class=\"bddy\"><font color=\"white\" size=\"6\">"
-											+ i + ") " + response.songs[i].title + " - " + response.songs[i].artist + "</font></span><br />";					
+											+ response.songs[i].num_votes + " vote" + (response.songs[i].num_votes != 1 ? "s - " : " - ") + response.songs[i].title + " - " + response.songs[i].artist + "</font></span><br />";					
 				}
 			}
 		);
